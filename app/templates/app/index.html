@@ -25,13 +25,26 @@
             {% csrf_token %}
 
             <table id="grid">
+                {% if form %}
                 <tr>
-                    {% if form %}
                     {% for field in form %}
+                    {{field.label}}
+                    {% if field.label <= 9 %}
+                    <td>{{field}}</td>
+                    {% endif %}
+                    {% endfor %}
+                </tr>
+                {% endif %}
+
+                {% if rows %}
+                {% for row in rows %}
+                <tr>
+                    {% for field in row %}
                     <td>{{field}}</td>
                     {% endfor %}
-                    {% endif %}
                 </tr>
+                {% endfor %}
+                {% endif %}
 
                 <!--
                 {% if sudoku_puzzle %}
@@ -51,7 +64,7 @@
                 {% else %}
                 <p>No puzzle available.</p>
                 {% endif %}
-            -->
+                -->
 
             </table>
             </br>

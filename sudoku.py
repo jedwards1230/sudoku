@@ -72,6 +72,18 @@ class SudokuGenerator:
                 id += 1
         return puzzle
     
+    def prepare_puzzle(self):
+        rows = []
+        for row in self.board_puzzle:
+            id = 0
+            puzzle = {}
+            for val in row:
+                n = 'col_' + str(id)
+                puzzle[n] = val
+                id += 1
+            rows.append(puzzle)
+        return rows
+    
     def prepare_puzzle_list(self):
         puzzle = []
         id = 0

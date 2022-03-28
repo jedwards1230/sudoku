@@ -20,17 +20,20 @@ def index(request):
             #'sudoku_puzzle': sudoku_puzzle,
         }'''
 
-        return render(request, 'app/index.html', context)
+        return render(request, 'app/index.html')
     else:
         gen = SudokuGenerator(size=3, difficulty=0)
         
         # prepare data in Django form. tougher to iterate through to display row by row
         # may be easier to use without forms for easier iteration
-        sudoku_puzzle = gen.prepare_puzzle_dict()
-        form = PuzzleForm(initial=sudoku_puzzle)
+        sudoku_puzzle = gen.prepare_puzzle()
+        rows = []
+        for row in sudoku_puzzle:
+            rows.append(PuzzleForm(initial=row))
         
         context = {
-            'form': form,
+            #'form': form,
+            'rows': rows,
         }
         
         # submits data as a list of lists (grid)
