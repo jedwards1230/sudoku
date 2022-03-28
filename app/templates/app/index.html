@@ -26,11 +26,11 @@
 
             <table id="grid">
                 <tr>
-                {% if form %}
-                {% for field in form %}
+                    {% if form %}
+                    {% for field in form %}
                     <td>{{field}}</td>
-                {% endfor %}
-                {% endif %}
+                    {% endfor %}
+                    {% endif %}
                 </tr>
 
                 <!--
@@ -57,6 +57,11 @@
             </br>
             <button type="submit" name='submit_puzzle'>Check Puzzle</button>
         </form>
+
+        {% if success %}
+        </br>
+        <p>Form submitted successfully</p>
+        {% endif %}
     </div>
 </body>
 

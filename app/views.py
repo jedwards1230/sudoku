@@ -13,6 +13,7 @@ def index(request):
         
         if form.is_valid():
             print(request.POST)
+            context['success'] = True
         
         '''print(request.POST)
         
