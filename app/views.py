@@ -5,7 +5,6 @@ from sudoku import SudokuGenerator
 
 def index(request):
     if request.method == 'POST' and 'submit_puzzle' in request.POST:
-        #print(request.POST)
         form = PuzzleForm(request.POST)
         context = {
             'form': form
@@ -25,6 +24,8 @@ def index(request):
     else:
         gen = SudokuGenerator(size=3, difficulty=0)
         
+        # prepare data in Django form. tougher to iterate through to display row by row
+        # may be easier to use without forms for easier iteration
         sudoku_puzzle = gen.prepare_puzzle_dict()
         form = PuzzleForm(initial=sudoku_puzzle)
         
@@ -32,9 +33,10 @@ def index(request):
             'form': form,
         }
         
+        # submits data as a list of lists (grid)
+        # easier to display, but data changes (from str(value) to list(str(value))) so it may be cleaner to just use Django forms above
+        # print request.POST and sudoku_puzzle to compare in/out data 
         '''sudoku_puzzle = gen.prepare_puzzle_list()
-        sudoku_puzzle1 = gen.prepare_puzzle_dict()
-        #print(sudoku_puzzle1)
         context = {
             'sudoku_puzzle': sudoku_puzzle,
         }'''
