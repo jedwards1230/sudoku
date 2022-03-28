@@ -25,28 +25,14 @@
             {% csrf_token %}
 
             <table id="grid">
-                {% if sudoku_puzzle %}
-                {% for row in sudoku_puzzle %}
                 <tr>
-                    {% for item in row %}
-                    {% for id, val in item.items %}
-                    {% if val > 0 %}
-                    <!-- Solved cell -->
-                    <td><input name="cell_{{id}}" type="text" value="{{val}}" disabled></td>
-                    {% else %}
-                    <!-- Unsolved cell -->
-                    <td><input name="cell_{{id}}" type="text" maxlength="1" required></td>
-                    {% endif %}
-                    {% endfor %}
-                    {% endfor %}
-                </tr>
+                {% for field in form %}
+                    <td>{{field}}</td>
                 {% endfor %}
-                {% else %}
-                <p>No puzzle available.</p>
-                {% endif %}
+                </tr>
             </table>
             </br>
-            <button type="submit" name='submit_puzzle' value='puzzle_to_check'>Check Puzzle</button>
+            <button type="submit" name='submit_puzzle'>Check Puzzle</button>
         </form>
     </div>
 </body>
