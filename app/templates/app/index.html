@@ -26,10 +26,33 @@
 
             <table id="grid">
                 <tr>
+                {% if form %}
                 {% for field in form %}
                     <td>{{field}}</td>
                 {% endfor %}
+                {% endif %}
                 </tr>
+
+                <!--
+                {% if sudoku_puzzle %}
+                {% for row in sudoku_puzzle %}
+                <tr>
+                    {% for item in row %}
+                    {% for id, val in item.items %}
+                    {% if val > 0 %}
+                    <td><input name="{{id}}" type="text" value="{{val}}" readonly></td>
+                    {% else %}
+                    <td><input name="{{id}}" type="text" maxlength="1" required></td>
+                    {% endif %}
+                    {% endfor %}
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+                {% else %}
+                <p>No puzzle available.</p>
+                {% endif %}
+            -->
+
             </table>
             </br>
             <button type="submit" name='submit_puzzle'>Check Puzzle</button>

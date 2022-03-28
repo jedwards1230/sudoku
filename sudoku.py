@@ -62,7 +62,7 @@ class SudokuGenerator:
             print()
             
     # format sudoku puzzle for django template
-    def prepare_puzzle(self):
+    def prepare_puzzle_dict(self):
         puzzle = {}
         id = 0
         for row in self.board_puzzle:
@@ -70,4 +70,17 @@ class SudokuGenerator:
                 n = 'cell_' + str(id)
                 puzzle[n] = val
                 id += 1
+        return puzzle
+    
+    def prepare_puzzle_list(self):
+        puzzle = []
+        id = 0
+        for row in self.board_puzzle:
+            new_row = []
+            for val in row:
+                new_row.append({
+                    id : val
+                })
+                id += 1
+            puzzle.append(new_row)
         return puzzle
