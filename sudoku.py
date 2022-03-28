@@ -52,7 +52,9 @@ class SudokuGenerator:
     # randomize rows, columns and numbers (of valid base pattern)
     def shuffle(self, s): return sample(s, len(s)) 
 
-    def print_grid(self, grid):
+    def print_grid(self, grid, label=None):
+        if label:
+            print(label)
         for row in grid:
             for x in row:
                 if x == 0:
@@ -60,19 +62,23 @@ class SudokuGenerator:
                 else:
                     print(str(x) + '  ', end='')
             print()
-            
-    # format sudoku puzzle for django template
-    def prepare_puzzle_dict(self):
-        puzzle = {}
-        id = 0
-        for row in self.board_puzzle:
-            for val in row:
-                n = 'cell_' + str(id)
-                puzzle[n] = val
-                id += 1
-        return puzzle
+        print()
     
-    def prepare_puzzle(self):
+    # TODO: swap cols and rows. Currently out of order
+    def to_python(self, request):
+        cols = []
+        for key, _ in request.items():
+            if 'col' in key:
+                value = request.getlist(key)
+                cols.append(value)
+        
+        self.print_grid(cols, '\n** to_python **\n')
+        
+        # TODO: Gotta use dict for the Form at some point.
+        return {}
+    
+    def to_web(self):
+        self.print_grid(self.board_puzzle, '\n** to_web **\n')
         rows = []
         for row in self.board_puzzle:
             id = 0
@@ -83,16 +89,3 @@ class SudokuGenerator:
                 id += 1
             rows.append(puzzle)
         return rows
-    
-    def prepare_puzzle_list(self):
-        puzzle = []
-        id = 0
-        for row in self.board_puzzle:
-            new_row = []
-            for val in row:
-                new_row.append({
-                    id : val
-                })
-                id += 1
-            puzzle.append(new_row)
-        return puzzle

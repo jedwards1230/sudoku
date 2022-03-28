@@ -23,21 +23,10 @@
 
         <form action="{% url 'index' %}" method="post">
             {% csrf_token %}
-
             <table id="grid">
-                {% if form %}
-                <tr>
-                    {% for field in form %}
-                    {{field.label}}
-                    {% if field.label <= 9 %}
-                    <td>{{field}}</td>
-                    {% endif %}
-                    {% endfor %}
-                </tr>
-                {% endif %}
 
-                {% if rows %}
-                {% for row in rows %}
+                {% if puzzle %}
+                {% for row in puzzle %}
                 <tr>
                     {% for field in row %}
                     <td>{{field}}</td>
@@ -45,26 +34,6 @@
                 </tr>
                 {% endfor %}
                 {% endif %}
-
-                <!--
-                {% if sudoku_puzzle %}
-                {% for row in sudoku_puzzle %}
-                <tr>
-                    {% for item in row %}
-                    {% for id, val in item.items %}
-                    {% if val > 0 %}
-                    <td><input name="{{id}}" type="text" value="{{val}}" readonly></td>
-                    {% else %}
-                    <td><input name="{{id}}" type="text" maxlength="1" required></td>
-                    {% endif %}
-                    {% endfor %}
-                    {% endfor %}
-                </tr>
-                {% endfor %}
-                {% else %}
-                <p>No puzzle available.</p>
-                {% endif %}
-                -->
 
             </table>
             </br>
