@@ -21,7 +21,7 @@
         </br>
         <h1>Sudoku</h1>
 
-        <form action="{% url 'check_puzzle' %}" method="post">
+        <form action="{% url 'check_puzzle' %}" method="post" id="sudokuform">
             {% csrf_token %}
 
             <table id="grid">
@@ -44,7 +44,7 @@
                 {% endif %}
             </table>
             </br>
-            <button type="submit" name='submit_puzzle' value='puzzle_to_check'>Check Puzzle</button>
+            <button form="sudokuform" type="submit" name='submit_puzzle' value='puzzle_to_check'>Check Puzzle</button>
         </form>
     </div>
 </body>
