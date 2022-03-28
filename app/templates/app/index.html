@@ -18,11 +18,11 @@
 <body>
 
     <div class="container-fluid text-center">
-
+        </br>
         <h1>Sudoku</h1>
 
         <form action="{% url 'check_puzzle' %}" method="post">
-        {% csrf_token %}
+            {% csrf_token %}
 
             <table id="grid">
                 {% if sudoku_puzzle %}
@@ -31,9 +31,9 @@
                     {% for item in row %}
                     {% for id, val in item.items %}
                     {% if val > 0 %}
-                    <td><input id="cell-{{id}}" type="text" value="{{val}}" disabled></td>
+                    <td><input name="{{id}}" type="text" value="{{val}}" disabled></td>
                     {% else %}
-                    <td><input id="cell-{{id}}" type="text" maxlength="1" required></td>
+                    <td><input name="{{id}}" type="text" maxlength="1" required></td>
                     {% endif %}
                     {% endfor %}
                     {% endfor %}
@@ -43,13 +43,10 @@
                 <p>No puzzle available.</p>
                 {% endif %}
             </table>
-        </br>
-            <button type="submit" name='mybtn2' value='puzzle_to_check'>Check Puzzle</button>
+            </br>
+            <button type="submit" name='submit_puzzle' value='puzzle_to_check'>Check Puzzle</button>
         </form>
-
-
     </div>
-
 </body>
 
 </html>

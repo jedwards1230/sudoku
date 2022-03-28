@@ -5,7 +5,7 @@ from django.shortcuts import render
 from sudoku import SudokuGenerator
 
 def index(request):
-    gen = SudokuGenerator(size=3, difficulty=4)
+    gen = SudokuGenerator(size=3, difficulty=0)
     sudoku_puzzle = gen.prepare_puzzle()
     
     context = {
@@ -15,11 +15,8 @@ def index(request):
     return render(request, 'app/index.html', context)
 
 def check_puzzle(request):
-    if request.method == 'POST':
-        body_unicode = request.body.decode('utf-8')
-        print('content', body_unicode)
-        body = json.loads(body_unicode)
-        content = body['content']
-        print('content', content)
+    if request.method == 'POST' and 'submit_puzzle' in request.POST:
+        solution = request.POST
+        print(solution)
 
         return render(request, 'app/index.html')

@@ -1,14 +1,16 @@
 from random import sample
 from copy import deepcopy
+from django.conf import settings
 
 class SudokuGenerator:
     def __init__(self, size = 3, difficulty = 4):
-        # allows for board size between 2x2 and 4x4
-        if size not in range(2, 5):
-            raise ValueError('Invalid board size')
-        # difficulty measures how many spots are made blank in a puzzle. difficulty / 8 = percent hidden
-        if difficulty not in range(1, 8):
-            raise ValueError('Invalid difficulty')
+        if not settings.DEBUG:
+            # allows for board size between 2x2 and 4x4
+            if size not in range(2, 5):
+                raise ValueError('Invalid board size')
+            # difficulty measures how many spots are made blank in a puzzle. difficulty / 8 = percent hidden
+            if difficulty not in range(1, 8):
+                raise ValueError('Invalid difficulty')
         
         self.base = size
         self.side = self.base * self.base
