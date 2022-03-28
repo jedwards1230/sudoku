@@ -21,7 +21,7 @@
         </br>
         <h1>Sudoku</h1>
 
-        <form action="{% url 'check_puzzle' %}" method="post">
+        <form action="{% url 'index' %}" method="post">
             {% csrf_token %}
 
             <table id="grid">
@@ -31,9 +31,11 @@
                     {% for item in row %}
                     {% for id, val in item.items %}
                     {% if val > 0 %}
-                    <td><input name="{{id}}" type="text" value="{{val}}" disabled></td>
+                    <!-- Solved cell -->
+                    <td><input name="cell_{{id}}" type="text" value="{{val}}" disabled></td>
                     {% else %}
-                    <td><input name="{{id}}" type="text" maxlength="1" required></td>
+                    <!-- Unsolved cell -->
+                    <td><input name="cell_{{id}}" type="text" maxlength="1" required></td>
                     {% endif %}
                     {% endfor %}
                     {% endfor %}
