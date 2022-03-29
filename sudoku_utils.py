@@ -1,3 +1,6 @@
+from math import sqrt
+
+
 def print_grid(grid, label=None):
     if label:
         print('\n** ' + label + ' **\n')
@@ -11,18 +14,29 @@ def print_grid(grid, label=None):
     print()
     
 def to_python(request):
+    rows = []
+    row = []
+    
+    # compute size of board
+    side = 0
+    for e in request:
+        print(e)
+        if 'col' in e:
+            side += 1
+    side = int(sqrt(side))
+    
     # extract puzzle from request
-    cols = []
-    for key, _ in request.items():
-        if 'col' in key:
-            value = request.getlist(key)
-            cols.append(value)
+    for i, k in enumerate(request):
+        if 'col' in k:
+            value = request.getlist(k)
+            row.append(int(value[0]))
+            
+            # new row based on size
+            if i % side == 0 and i > 0:
+                rows.append(row)
+                row = []
     
-    # transpose cols x rows and convert to int lists
-    cols = zip(*cols)
-    cols = [[int(item) for item in col] for col in cols]
-    
-    return cols
+    return rows
 
 def to_web(board):
     rows = []
@@ -35,3 +49,7 @@ def to_web(board):
             id += 1
         rows.append(puzzle)
     return rows
+
+# TODO: check if puzzle is solved
+def check_solution(board):
+    return True

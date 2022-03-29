@@ -1,44 +1,36 @@
+from django.forms import formset_factory
 from django.shortcuts import render
 from .forms import PuzzleForm
 
 from sudoku import SudokuGenerator
-from sudoku_utils import to_python, to_web
+from sudoku_utils import to_python, to_web, print_grid, check_solution
 
 def index(request):
+    PuzzleFormSet = formset_factory(PuzzleForm)
+    
     if request.method == 'POST' and 'submit_puzzle' in request.POST:
-        gen = SudokuGenerator()
         sudoku_puzzle = to_python(request.POST)
         
-        # TODO: check if puzzle is solved
-        # TODO: find out how to properly store original solution
+        win = check_solution(sudoku_puzzle)
         
         sudoku_puzzle = to_web(sudoku_puzzle)
-        
-        
-        # TODO: Gotta figure out how to consolidate the rows for proper validation checking in django (or alt?)
-        '''puzzle = []
-        for row in sudoku_puzzle:
-            puzzle.append(PuzzleForm(initial=row))'''
-        
-        puzzle = PuzzleForm({})
+        formset = PuzzleFormSet(initial=sudoku_puzzle)
         
         context = {
-            'puzzle': {puzzle}
+            'puzzle': formset,
         }
         
-        if puzzle.is_valid():
-            context['success'] = True
+        if formset.is_valid():
+            context['success'] = win
     else:
         gen = SudokuGenerator(size=3, difficulty=0)
         puzzle, solution = gen.get_sudoku()
         sudoku_puzzle = to_web(puzzle)
         
-        puzzle = []
-        for row in sudoku_puzzle:
-            puzzle.append(PuzzleForm(initial=row))
+        formset = PuzzleFormSet(initial=sudoku_puzzle)
         
         context = {
-            'puzzle': puzzle,
+            'puzzle': formset,
         }
         
     return render(request, 'app/index.html', context)
