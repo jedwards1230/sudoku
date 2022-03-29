@@ -37,11 +37,13 @@ class SudokuGenerator:
         return board_solution
     
     def get_puzzle(self, solution, difficulty):
+        # empties = puzzle size * percent to hide
         max_difficulty = 8
         squares = self.side * self.side
         empties = squares * difficulty // max_difficulty
         puzzle = deepcopy(solution)
         
+        # hide percentage of cells
         for p in sample(range(squares), empties):
             puzzle[p // self.side][p % self.side] = 0
             

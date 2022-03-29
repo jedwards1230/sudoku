@@ -1,5 +1,6 @@
 from django import forms
 
+# TODO: apply readonly dynamically in template. editing is currently blocked.
 # TODO: Look into creating these dynamically for arbitrary scaling
 # up to 5x5 requires 9 more lines. so tedious :/
 class PuzzleForm(forms.Form):
