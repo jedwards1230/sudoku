@@ -1,5 +1,7 @@
 from django import forms
 
+# TODO: Look into creating these dynamically for arbitrary scaling
+# up to 5x5 requires 9 more lines. so tedious :/
 class PuzzleForm(forms.Form):
     col_0 = forms.CharField(label='0', widget=forms.TextInput(attrs={'readonly':'readonly'}))
     col_1 = forms.CharField(label='1', widget=forms.TextInput(attrs={'readonly':'readonly'}))
