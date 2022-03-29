@@ -17,7 +17,9 @@ class SudokuGenerator:
         
         # generate board solution and puzzle
         self.board_solution = self.get_solution()
-        self.board_puzzle = self.get_puzzle(difficulty)
+        self.board_puzzle = self.get_puzzle(self.board_solution, difficulty)
+    
+    def get_sudoku(self): return self.board_puzzle, self.board_solution
     
     def get_solution(self):
         rBase = range(self.base) 
@@ -34,11 +36,11 @@ class SudokuGenerator:
         
         return board_solution
     
-    def get_puzzle(self, difficulty):
+    def get_puzzle(self, solution, difficulty):
         max_difficulty = 8
         squares = self.side * self.side
         empties = squares * difficulty // max_difficulty
-        puzzle = deepcopy(self.board_solution)
+        puzzle = deepcopy(solution)
         
         for p in sample(range(squares), empties):
             puzzle[p // self.side][p % self.side] = 0
@@ -50,42 +52,4 @@ class SudokuGenerator:
     def pattern(self, row, col): return (self.base * (row % self.base) + row // self.base + col) % self.side
 
     # randomize rows, columns and numbers (of valid base pattern)
-    def shuffle(self, s): return sample(s, len(s)) 
-
-    def print_grid(self, grid, label=None):
-        if label:
-            print('\n** ' + label + ' **\n')
-        for row in grid:
-            for x in row:
-                if x == 0:
-                    print('_  ', end='')
-                else:
-                    print(str(x) + '  ', end='')
-            print()
-        print()
-    
-    def to_python(self, request):
-        # extract puzzle from request
-        cols = []
-        for key, _ in request.items():
-            if 'col' in key:
-                value = request.getlist(key)
-                cols.append(value)
-        
-        # transpose cols x rows and convert to int lists
-        cols = zip(*cols)
-        cols = [[int(item) for item in col] for col in cols]
-        
-        return cols
-    
-    def to_web(self, board):
-        rows = []
-        for row in board:
-            id = 0
-            puzzle = {}
-            for val in row:
-                n = 'col_' + str(id)
-                puzzle[n] = val
-                id += 1
-            rows.append(puzzle)
-        return rows
+    def shuffle(self, s): return sample(s, len(s))
