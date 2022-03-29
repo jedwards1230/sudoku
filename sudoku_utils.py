@@ -6,7 +6,9 @@ def print_grid(grid, label=None):
         print('\n** ' + label + ' **\n')
     for row in grid:
         for x in row:
-            if x == 0:
+            if x == None:
+                raise ValueError('Invalid cell input')
+            if x == 0 or x == None:
                 print('_  ', end='')
             else:
                 print(str(x) + '  ', end='')

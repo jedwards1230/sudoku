@@ -23,21 +23,28 @@
 
         <form action="{% url 'index' %}" method="post">
             {% csrf_token %}
+            {% if puzzle %}
             <table id="grid">
+            <!-- 
+                TODO: Make it so puzzle is read only except for inputs
+                This may cause issues when POSTing back and needing to edit checked file
+            -->
+            <!-- 
+                TODO: center numbers from number input
+            -->
 
-                {% if puzzle %}
                 {% for row in puzzle %}
                 <tr>
-                    {% for field in row %}
-                    {% if field.value %}
-                    <td>{{field}}</td>
-                    {% endif %}
-                    {% endfor %}
+                    {% for field in row %} {% if field.value %}
+                        <td>{{ field }}</td>
+                    {% elif field.value == 0 %}
+                        <td><input type="number" name="{{ field.name }}" ></td>
+                    {% endif %}  {% endfor %}
                 </tr>
                 {% endfor %}
-                {% endif %}
 
             </table>
+            {% endif %}
             </br>
             <!-- TODO: add refresh, board size, and difficulty buttons -->
             <button type="submit" name='submit_puzzle'>Check Puzzle</button>
