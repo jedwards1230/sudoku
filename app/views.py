@@ -8,6 +8,9 @@ def index(request):
         gen = SudokuGenerator()
         sudoku_puzzle = gen.to_python(request.POST)
         
+        # TODO: check if puzzle is solved
+        # TODO: find out how to properly store original solution
+        
         sudoku_puzzle = gen.to_web(sudoku_puzzle)
         
         
@@ -25,7 +28,7 @@ def index(request):
         if puzzle.is_valid():
             context['success'] = True
     else:
-        gen = SudokuGenerator(size=3, difficulty=0)
+        gen = SudokuGenerator(size=2, difficulty=0)
         sudoku_puzzle = gen.to_web(gen.board_puzzle)
         
         puzzle = []

@@ -1,5 +1,6 @@
 from django import forms
 
+# TODO: Make this able to scale with board size
 class PuzzleForm(forms.Form):
     col_0 = forms.CharField(label='0', widget=forms.TextInput(attrs={'readonly':'readonly'}))
     col_1 = forms.CharField(label='1', widget=forms.TextInput(attrs={'readonly':'readonly'}))
