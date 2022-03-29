@@ -54,7 +54,7 @@ class SudokuGenerator:
 
     def print_grid(self, grid, label=None):
         if label:
-            print(label)
+            print('\n** ' + label + ' **\n')
         for row in grid:
             for x in row:
                 if x == 0:
@@ -64,23 +64,23 @@ class SudokuGenerator:
             print()
         print()
     
-    # TODO: swap cols and rows. Currently out of order
     def to_python(self, request):
+        # extract puzzle from request
         cols = []
         for key, _ in request.items():
             if 'col' in key:
                 value = request.getlist(key)
                 cols.append(value)
         
-        self.print_grid(cols, '\n** to_python **\n')
+        # transpose cols x rows and convert to int lists
+        cols = zip(*cols)
+        cols = [[int(item) for item in col] for col in cols]
         
-        # TODO: Gotta use dict for the Form at some point.
-        return {}
+        return cols
     
-    def to_web(self):
-        self.print_grid(self.board_puzzle, '\n** to_web **\n')
+    def to_web(self, board):
         rows = []
-        for row in self.board_puzzle:
+        for row in board:
             id = 0
             puzzle = {}
             for val in row:

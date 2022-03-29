@@ -5,19 +5,30 @@ from sudoku import SudokuGenerator
 
 def index(request):
     if request.method == 'POST' and 'submit_puzzle' in request.POST:
-        puzzle = SudokuGenerator().to_python(request.POST)
-        puzzle = PuzzleForm(puzzle)
+        gen = SudokuGenerator()
+        sudoku_puzzle = gen.to_python(request.POST)
+        
+        sudoku_puzzle = gen.to_web(sudoku_puzzle)
+        
+        
+        # TODO: Gotta figure out how to consolidate the rows for proper validation checking in django (or alt?)
+        '''puzzle = []
+        for row in sudoku_puzzle:
+            puzzle.append(PuzzleForm(initial=row))'''
+        
+        puzzle = PuzzleForm({})
+        
         context = {
-            'puzzle': puzzle
+            'puzzle': {puzzle}
         }
         
         if puzzle.is_valid():
             context['success'] = True
     else:
         gen = SudokuGenerator(size=3, difficulty=0)
-        sudoku_puzzle = gen.to_web()
-        puzzle = []
+        sudoku_puzzle = gen.to_web(gen.board_puzzle)
         
+        puzzle = []
         for row in sudoku_puzzle:
             puzzle.append(PuzzleForm(initial=row))
         
