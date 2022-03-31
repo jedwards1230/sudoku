@@ -21,6 +21,10 @@ def index(request):
                 'win': win,
                 'checked': True,
             }
+        else:
+            context = {
+                'invalid_submission': 'There was an error validating the board.'
+            }
     else:
         gen = SudokuGenerator(size=3, difficulty=1)
         puzzle, solution = gen.get_sudoku()

@@ -21,38 +21,31 @@
         </br>
         <h1>Sudoku</h1>
 
+        {% if puzzle %}
         <form action="{% url 'index' %}" method="post">
             {% csrf_token %}
-            {% if puzzle %}
             <table id="grid">
-            <!-- 
-                TODO: Make it so puzzle is read only except for inputs
-                This may cause issues when POSTing back and needing to edit checked file
-            -->
-
                 {% for row in puzzle %} {% with forloop.counter0 as outer_counter %}
                 <tr>
                     {% for field in row %} {% if field.value %}
                         <td><input type="number" name="form-{{ outer_counter }}-{{ field.name }}" value="{{ field.value}}" readonly></td>
                     {% elif field.value == 0 %}
-                        <td><input type="number" name="form-{{ outer_counter }}-{{ field.name }}" required></td>
+                        <td><input type="number" name="form-{{ outer_counter }}-{{ field.name }}" value=" " required min="1"></td>
                     {% endif %}  {% endfor %}
                 </tr>
                 {% endwith %} {% endfor %}
-
             </table>
-            {% endif %}
             </br>
             <!-- TODO: add refresh, board size, and difficulty buttons -->
             <button type="submit" name='submit_puzzle'>Check Puzzle</button>
         </form>
+        {% endif %}
         </br>
         {% if win == True %}
         <p>You win!!! (jk theres no solver yet)</p>
         {% elif win == False %}
         <p>You suck!!!</p>
         {% endif %}
-
     </div>
 </body>
 

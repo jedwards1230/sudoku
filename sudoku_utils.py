@@ -14,17 +14,18 @@ def print_grid(grid, label=None):
                 print(str(x) + '  ', end='')
         print()
     print()
-    
+
+# convert sudoku board from POST request to list of lists
 def to_python(request):
     rows = []
     row = []
     
     # compute size of board
-    side = 0
+    size = 0
     for e in request:
         if 'col' in e:
-            side += 1
-    side = int(sqrt(side))
+            size += 1
+    side = int(sqrt(size))
     
     # extract puzzle from request
     for i, k in enumerate(request):
@@ -40,8 +41,14 @@ def to_python(request):
                 rows.append(row)
                 row = []
     
+    # check if board is malformed
+    for row in rows:
+        if len(row) != size:
+            return None
+    
     return rows
 
+# convert sudoku board to be processed by Django formset_factory
 def to_web(board):
     rows = []
     for row in board:
