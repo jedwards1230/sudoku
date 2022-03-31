@@ -14,22 +14,20 @@ def index(request):
             puzzle = to_web(puzzle)
             
             PuzzleFormSet = formset_factory(PuzzleForm)
-            formset = PuzzleFormSet(initial=puzzle)
+            formset = PuzzleFormSet(initial=puzzle, auto_id=False)
             
             context = {
                 'puzzle': formset,
+                'win': win,
                 'checked': True,
             }
-            
-            if formset.is_valid():
-                context['win'] = win
     else:
-        gen = SudokuGenerator(size=3, difficulty=0)
+        gen = SudokuGenerator(size=3, difficulty=1)
         puzzle, solution = gen.get_sudoku()
         puzzle = to_web(puzzle)
         
         PuzzleFormSet = formset_factory(PuzzleForm, max_num = len(puzzle))
-        formset = PuzzleFormSet(initial = puzzle)
+        formset = PuzzleFormSet(initial = puzzle, auto_id=False)
         
         context = {
             'puzzle': formset,

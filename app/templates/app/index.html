@@ -30,15 +30,15 @@
                 This may cause issues when POSTing back and needing to edit checked file
             -->
 
-                {% for row in puzzle %}
+                {% for row in puzzle %} {% with forloop.counter0 as outer_counter %}
                 <tr>
                     {% for field in row %} {% if field.value %}
-                        <td>{{ field }}</td>
+                        <td><input type="number" name="form-{{ outer_counter }}-{{ field.name }}" value="{{ field.value}}" readonly></td>
                     {% elif field.value == 0 %}
-                        <td><input type="number" name="{{ field.name }}" ></td>
+                        <td><input type="number" name="form-{{ outer_counter }}-{{ field.name }}" required></td>
                     {% endif %}  {% endfor %}
                 </tr>
-                {% endfor %}
+                {% endwith %} {% endfor %}
 
             </table>
             {% endif %}
@@ -46,13 +46,11 @@
             <!-- TODO: add refresh, board size, and difficulty buttons -->
             <button type="submit" name='submit_puzzle'>Check Puzzle</button>
         </form>
-
-        {% if win %}
         </br>
-        <p>You win!!!</p>
-        {% elif checked %}
-        </br>
-        <p>Form checked</p>
+        {% if win == True %}
+        <p>You win!!! (jk theres no solver yet)</p>
+        {% elif win == False %}
+        <p>You suck!!!</p>
         {% endif %}
 
     </div>
