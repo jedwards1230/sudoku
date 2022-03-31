@@ -1,3 +1,4 @@
+import itertools
 from math import sqrt
 
 
@@ -40,10 +41,10 @@ def to_python(request):
             if i % side == 0 and i > 0:
                 rows.append(row)
                 row = []
-    
+                
     # check if board is malformed
     for row in rows:
-        if len(row) != size:
+        if len(row) != side:
             return None
     
     return rows
@@ -63,4 +64,38 @@ def to_web(board):
 
 # TODO: check if puzzle is solved
 def check_solution(board):
+    def valid_line(line):
+        return (len(line) == size and sum(line) == sum(set(line)))
+    
+    size = len(board)
+    side = int(sqrt(size))
+    
+    # check rows
+    for row in board:
+        for x in row:
+            # check every value is int
+            if not isinstance(x, int): return False
+            # check value within proper range
+            if not 0 < x <= size: return False
+        # check values are unique
+        if not valid_line(row): return False
+    
+    # check cols
+    board = list(zip(*board))
+    for col in board:
+        # check values are unique
+        if not valid_line(col): return False
+    
+    # check subgrids
+    squares = []
+    for i in range(0, size, side):
+        for j in range(0, size, side):
+            square = list(itertools.chain(row[j:j+3] for row in board[i:i+3]))
+            squares.append(square)
+    bad_squares = [square for square in squares if not valid_line(square)]
+    if not bad_squares: return False
+            
     return True
+    
+
+            
