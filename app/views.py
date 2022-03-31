@@ -13,6 +13,9 @@ def index(request):
             
             puzzle = to_web(puzzle)
             
+            # TODO: currently returns POST as readonly due to a value being in the form
+            # Need to track modified values in request somehow
+            
             PuzzleFormSet = formset_factory(PuzzleForm)
             formset = PuzzleFormSet(initial=puzzle, auto_id=False)
             
