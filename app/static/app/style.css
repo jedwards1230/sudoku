@@ -39,11 +39,11 @@ input:disabled {
     }
 
     table {
-        border: 2px solid #EEEEEE;
+        border-color: #EEEEEE;
     }
     
     td {
-        border: 1px solid #EEEEEE;
+        border-color: #EEEEEE;
     }
     
     input {
