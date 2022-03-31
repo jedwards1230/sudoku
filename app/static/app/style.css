@@ -15,8 +15,12 @@ td {
     vertical-align: middle;
 }
 
+.alert {
+    max-width: 300px;
+}
+
 select {
-    min-width: 100px;
+    min-width: 150px;
 }
 
 .form-select {

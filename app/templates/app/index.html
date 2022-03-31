@@ -21,6 +21,7 @@
         <h1>Sudoku</h1>
         </br>
         {% if puzzle.errors %} </br> {{ puzzle.errors }} </br> {% endif %}
+
         <form action="{% url 'index' %}" method="post" class="row row-cols-lg-auto justify-content-center">
             {% csrf_token %}
             <div class="col-1 pe-0 my-auto">
@@ -53,6 +54,20 @@
             </div>
         </form>
         </br>
+
+        <div class="row">
+            {% if win == True %}
+            <div class="alert alert-success alert-dismissible col mx-auto fade show" role="alert">
+                You win!
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% elif win == False %}
+            <div class="alert alert-danger col mx-auto" role="alert">
+                Try again
+            </div>
+            {% endif %}
+        </div>
+
         {% if puzzle %}
         <form action="{% url 'index' %}" method="post">
             {% csrf_token %}
@@ -73,13 +88,10 @@
             <button class="btn btn-success" type="submit" value="1" name='submit_puzzle'>Check</button>
         </form>
         {% endif %}
-        </br>
-        {% if win == True %}
-        <p>You win!!!</p>
-        {% elif win == False %}
-        <p>You suck!!!</p>
-        {% endif %}
+
+        </br>        
     </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
