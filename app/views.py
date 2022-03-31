@@ -1,9 +1,7 @@
-from django.forms import formset_factory
-from django.shortcuts import redirect, render
-from .forms import PuzzleForm
+from django.shortcuts import render
 
 from sudoku import SudokuGenerator
-from sudoku_utils import to_python, to_web, print_grid, check_solution
+from sudoku_utils import to_python, to_web, print_grid, check_solution, create_suduko_formset
 
 def index(request):
     # TODO: is POST proper?
@@ -17,11 +15,8 @@ def index(request):
             # TODO: currently returns POST as readonly due to a value being in the form
             # Need to track modified values in request somehow
             
-            PuzzleFormSet = formset_factory(PuzzleForm)
-            formset = PuzzleFormSet(initial=puzzle, auto_id=False)
-            
             context = {
-                'puzzle': formset,
+                'puzzle': create_suduko_formset(puzzle),
                 'win': win,
                 'checked': True,
             }
@@ -30,15 +25,15 @@ def index(request):
                 'invalid_submission': 'There was an error validating the board.'
             }
     else:
-        gen = SudokuGenerator(size=3, difficulty=1)
+        gen = SudokuGenerator(size=3, difficulty=0)
         puzzle, solution = gen.get_sudoku()
         puzzle = to_web(puzzle)
         
-        PuzzleFormSet = formset_factory(PuzzleForm, max_num = len(puzzle))
-        formset = PuzzleFormSet(initial = puzzle, auto_id=False)
-        
         context = {
-            'puzzle': formset,
+            'puzzle': create_suduko_formset(puzzle),
         }
         
     return render(request, 'app/index.html', context)
+
+def new_puzzle(request):
+    return

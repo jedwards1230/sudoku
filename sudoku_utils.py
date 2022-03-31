@@ -1,6 +1,10 @@
 import itertools
 from math import sqrt
 
+from django.forms import formset_factory
+
+from app.forms import PuzzleForm
+
 
 def print_grid(grid, label=None):
     if label:
@@ -97,5 +101,7 @@ def check_solution(board):
             
     return True
     
-
-            
+def create_suduko_formset(puzzle):
+    PuzzleFormSet = formset_factory(PuzzleForm)
+    formset = PuzzleFormSet(initial=puzzle, auto_id=False)
+    return formset
