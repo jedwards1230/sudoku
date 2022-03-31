@@ -6,6 +6,7 @@ from sudoku import SudokuGenerator
 from sudoku_utils import to_python, to_web, print_grid, check_solution
 
 def index(request):
+    # TODO: is POST proper?
     if request.method == 'POST':
         puzzle = to_python(request.POST)
         if puzzle:

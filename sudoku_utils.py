@@ -62,7 +62,7 @@ def to_web(board):
         rows.append(puzzle)
     return rows
 
-# TODO: check if puzzle is solved
+# check if puzzle is solved
 def check_solution(board):
     def valid_line(line):
         return (len(line) == size and sum(line) == sum(set(line)))
