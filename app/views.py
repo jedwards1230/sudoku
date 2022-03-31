@@ -1,39 +1,42 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
-from sudoku import SudokuGenerator
-from sudoku_utils import to_python, to_web, print_grid, check_solution, create_suduko_formset
+import sudoku_utils as su
+
 
 def index(request):
+    context = {
+        'config': {
+            'size': 3,
+            'difficulty': 0,
+        }
+    }
     # TODO: is POST proper?
     if request.method == 'POST':
-        puzzle = to_python(request.POST)
-        if puzzle:
-            win = check_solution(puzzle)
-            
-            puzzle = to_web(puzzle)
-            
-            # TODO: currently returns POST as readonly due to a value being in the form
-            # Need to track modified values in request somehow
-            
-            context = {
-                'puzzle': create_suduko_formset(puzzle),
-                'win': win,
-                'checked': True,
-            }
-        else:
-            context = {
-                'invalid_submission': 'There was an error validating the board.'
-            }
+        context['config']['size'] = int(request.POST.get('size'))
+        context['config']['difficulty'] = int(request.POST.get('difficulty'))
+        if request.POST.get('submit_puzzle') == '1':
+            puzzle = su.to_python(request.POST, context['config']['size'])
+            if puzzle:
+                # TODO: currently returns POST as readonly due to a value being in the form
+                # Need to track modified values in request somehow
+                
+                # TODO: formset generates extra form for some reason (10 rows instead of 9)
+                
+                context['win'] = su.check_solution(puzzle)
+                formset = su.new_sudoku_formset(context['config']['size'], context['config']['difficulty'], puzzle)
+            else:
+                context = {
+                    'invalid_submission': 'There was an error validating the board.'
+                }
+        if request.POST.get('new_puzzle') == '1':
+            formset = su.new_sudoku_formset(context['config']['size'], context['config']['difficulty'])
     else:
-        gen = SudokuGenerator(size=3, difficulty=0)
-        puzzle, solution = gen.get_sudoku()
-        puzzle = to_web(puzzle)
+        context['config']['size'] = 3
+        context['config']['difficulty'] = 0
         
-        context = {
-            'puzzle': create_suduko_formset(puzzle),
-        }
+        formset = su.new_sudoku_formset(context['config']['size'], context['config']['difficulty'])
+    
+    context['size_desc'] = str(context['config']['size'] * context['config']['size']) + 'x' + str(context['config']['size'] * context['config']['size'])
+    context['puzzle'] = formset
         
     return render(request, 'app/index.html', context)
-
-def new_puzzle(request):
-    return

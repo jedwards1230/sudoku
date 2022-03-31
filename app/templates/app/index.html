@@ -17,18 +17,47 @@
 
 <body>
 
-    <div class="container-fluid text-center">
+    <div class="container text-center">
         </br>
         <h1>Sudoku</h1>
-
+        {% if puzzle.errors %} </br> {{ puzzle.errors }} </br> {% endif %}
+        <form action="{% url 'index' %}" method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-auto">
+                    <select class="form-select" name="size" value="{{ config.size }}" aria-label="Default select example">
+                        {% for v in '234' %} {% if v == config.size|floatformat:"0" %}
+                        <option value="{{ v }}" selected>{% widthratio v 1 v %}x{% widthratio v 1 v %}</option>
+                        {% else %}
+                        <option value="{{ v }}">{% widthratio v 1 v %}x{% widthratio v 1 v %}</option>
+                        {% endif %} {% endfor %}
+                    </select>
+                </div>
+                <div class="col-auto">
+                    <select class="form-select col-1" name="difficulty" value="{{ config.difficulty }}" aria-label="Default select example">
+                        {% for v in '123456' %} {% if v == config.difficulty|floatformat:"0" %}
+                        <option value="{{ v }}" selected>{{ v }}</option>
+                        {% else %}
+                        <option value="{{ v }}">{{ v }}</option>
+                        {% endif %} {% endfor %}
+                    </select>
+                </div>
+                <div class="col">
+                    <button class="btn btn-primary col-1" value="1" type="submit" name='new_puzzle'>New</button>
+                </div>
+            </div>
+        </form>
+        </br>
         {% if puzzle %}
         <form action="{% url 'index' %}" method="post">
             {% csrf_token %}
+            <input type="hidden" name="size" value="{{ config.size }}">
+            <input type="hidden" name="difficulty" value="{{ config.difficulty }}">
             <table id="grid">
                 {% for row in puzzle %} {% with forloop.counter0 as outer_counter %}
                 <tr>
                     {% for field in row %} {% if field.value %}
-                        <td><input type="number" name="form-{{ outer_counter }}-{{ field.name }}" value="{{ field.value}}" readonly class="preset_value"></td>
+                        <td><input type="number" name="form-{{ outer_counter }}-{{ field.name }}" value="{{ field.value}}" readonly id="preset" class="preset_value"></td>
                     {% elif field.value == 0 %}
                         <td><input type="number" name="form-{{ outer_counter }}-{{ field.name }}" value="" required min="1"></td>
                     {% endif %}  {% endfor %}
@@ -36,9 +65,7 @@
                 {% endwith %} {% endfor %}
             </table>
             </br>
-            <!-- TODO: add board size and difficulty buttons -->
-            <button class="btn btn-primary" type="button" name='refresh_puzzle'>New</button>
-            <button class="btn btn-success" type="submit" name='submit_puzzle'>Check</button>
+            <button class="btn btn-success" type="submit" value="1" name='submit_puzzle'>Check</button>
         </form>
         {% endif %}
         </br>
