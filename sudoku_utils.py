@@ -22,7 +22,6 @@ def to_python(request):
     # compute size of board
     side = 0
     for e in request:
-        print(e)
         if 'col' in e:
             side += 1
     side = int(sqrt(side))
@@ -31,7 +30,10 @@ def to_python(request):
     for i, k in enumerate(request):
         if 'col' in k:
             value = request.getlist(k)
-            row.append(int(value[0]))
+            if value[0]:
+                row.append(int(value[0]))
+            else:
+                row.append(0)
             
             # new row based on size
             if i % side == 0 and i > 0:

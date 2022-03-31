@@ -29,9 +29,6 @@
                 TODO: Make it so puzzle is read only except for inputs
                 This may cause issues when POSTing back and needing to edit checked file
             -->
-            <!-- 
-                TODO: center numbers from number input
-            -->
 
                 {% for row in puzzle %}
                 <tr>
@@ -50,10 +47,14 @@
             <button type="submit" name='submit_puzzle'>Check Puzzle</button>
         </form>
 
-        {% if success %}
+        {% if win %}
         </br>
-        <p>Form submitted successfully</p>
+        <p>You win!!!</p>
+        {% elif checked %}
+        </br>
+        <p>Form checked</p>
         {% endif %}
+
     </div>
 </body>
 
