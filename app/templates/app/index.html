@@ -12,7 +12,6 @@
 
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'app/style.css' %}">
-
 </head>
 
 <body>
@@ -20,31 +19,37 @@
     <div class="container text-center">
         </br>
         <h1>Sudoku</h1>
+        </br>
         {% if puzzle.errors %} </br> {{ puzzle.errors }} </br> {% endif %}
-        <form action="{% url 'index' %}" method="post">
+        <form action="{% url 'index' %}" method="post" class="row row-cols-lg-auto justify-content-center">
             {% csrf_token %}
-            <div class="row">
-                <div class="col-auto">
-                    <select class="form-select" name="size" value="{{ config.size }}" aria-label="Default select example">
-                        {% for v in '234' %} {% if v == config.size|floatformat:"0" %}
-                        <option value="{{ v }}" selected>{% widthratio v 1 v %}x{% widthratio v 1 v %}</option>
-                        {% else %}
-                        <option value="{{ v }}">{% widthratio v 1 v %}x{% widthratio v 1 v %}</option>
-                        {% endif %} {% endfor %}
-                    </select>
-                </div>
-                <div class="col-auto">
-                    <select class="form-select col-1" name="difficulty" value="{{ config.difficulty }}" aria-label="Default select example">
-                        {% for v in '123456' %} {% if v == config.difficulty|floatformat:"0" %}
-                        <option value="{{ v }}" selected>{{ v }}</option>
-                        {% else %}
-                        <option value="{{ v }}">{{ v }}</option>
-                        {% endif %} {% endfor %}
-                    </select>
-                </div>
-                <div class="col">
-                    <button class="btn btn-primary col-1" value="1" type="submit" name='new_puzzle'>New</button>
-                </div>
+            <div class="col-1 pe-0 my-auto">
+                <label for="size_select">Size</label>
+            </div>
+            <div class="col-5">
+                <select class="form-select" id="size_select" name="size" value="{{ config.size }}">
+                    {% for v in '234' %} {% if v == config.size|floatformat:"0" %}
+                    <option value="{{ v }}" selected>{% widthratio v 1 v %}x{% widthratio v 1 v %}</option>
+                    {% else %}
+                    <option value="{{ v }}">{% widthratio v 1 v %}x{% widthratio v 1 v %}</option>
+                    {% endif %} {% endfor %}
+                </select>
+            </div>
+            <div class="col-1 pe-0 my-auto">
+                <label for="difficulty_select">Difficulty</label>
+            </div>
+            <div class="col-5">
+                <select class="form-select" id="difficulty_select" name="difficulty" value="{{ config.difficulty }}">
+                    {% for v in '0123456' %} {% if v == config.difficulty|floatformat:"0" %}
+                    <option value="{{ v }}" selected>{{ v }}</option>
+                    {% else %}
+                    <option value="{{ v }}">{{ v }}</option>
+                    {% endif %} {% endfor %}
+                </select>
+            </div>
+            <div class="col-2">
+                <label for="new_puzzle"></br></label>
+                <button class="btn btn-primary" value="1" type="submit" name='new_puzzle'>New</button>
             </div>
         </form>
         </br>

@@ -15,6 +15,15 @@ td {
     vertical-align: middle;
 }
 
+select {
+    min-width: 100px;
+}
+
+.form-select {
+    color: #222222;
+    background-color: #FFFFFF;
+}
+
 input {
     color: #000000;
     padding: 0;
@@ -36,6 +45,11 @@ input:disabled {
     body {
         background-color: #121212;
         color: #FAFAFA;
+    }
+
+    .form-select {
+        color: #FAFAFA;
+        background-color: #222222;
     }
 
     table {
