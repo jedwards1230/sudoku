@@ -31,6 +31,31 @@ input:disabled {
     background-color: #EEEEEE;
 }
 
+@media (prefers-color-scheme: dark) {
+    html,
+    body {
+        background-color: #121212;
+        color: #FAFAFA;
+    }
+
+    table {
+        border: 2px solid #EEEEEE;
+    }
+    
+    td {
+        border: 1px solid #EEEEEE;
+    }
+    
+    input {
+        color: #FAFAFA;
+        background-color: #222222;
+    }
+    
+    .preset_value {
+        background-color: #1a1a1a;
+    }
+}
+
 
 /*  Remove buttons from number input
     Chrome, Safari, Edge, Opera */
