@@ -28,16 +28,17 @@
                 {% for row in puzzle %} {% with forloop.counter0 as outer_counter %}
                 <tr>
                     {% for field in row %} {% if field.value %}
-                        <td><input type="number" name="form-{{ outer_counter }}-{{ field.name }}" value="{{ field.value}}" readonly></td>
+                        <td><input type="number" name="form-{{ outer_counter }}-{{ field.name }}" value="{{ field.value}}" readonly class="preset_value"></td>
                     {% elif field.value == 0 %}
-                        <td><input type="number" name="form-{{ outer_counter }}-{{ field.name }}" value=" " required min="1"></td>
+                        <td><input type="number" name="form-{{ outer_counter }}-{{ field.name }}" value="" required min="1"></td>
                     {% endif %}  {% endfor %}
                 </tr>
                 {% endwith %} {% endfor %}
             </table>
             </br>
-            <!-- TODO: add refresh, board size, and difficulty buttons -->
-            <button type="submit" name='submit_puzzle'>Check Puzzle</button>
+            <!-- TODO: add board size and difficulty buttons -->
+            <button class="btn btn-primary" type="button" name='refresh_puzzle'>New</button>
+            <button class="btn btn-success" type="submit" name='submit_puzzle'>Check</button>
         </form>
         {% endif %}
         </br>
