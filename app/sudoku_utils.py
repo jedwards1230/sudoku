@@ -28,7 +28,7 @@ def to_python(request):
     
     i = 0
     
-    size = request.get('size')
+    size = int(request.get('size'))
     l = size ** 2
     
     # extract puzzle from request
