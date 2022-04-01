@@ -1,8 +1,8 @@
 import itertools
 
-from app.forms import PuzzleForm
+from .forms import PuzzleForm
 
-from sudoku import SudokuGenerator
+from .sudoku import SudokuGenerator
 
 
 def print_grid(grid: list, label: str = None):
