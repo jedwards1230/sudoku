@@ -11,13 +11,13 @@ class PuzzleForm():
                 if edits[i][j] == 1:
                     table_hidden = f'   <input type="hidden" value=\'editable\' name="_{i}_col_{j}">'
                     if spot == 0:
-                        table_td = f'   <td><input type="number" min="1" max="{l}" name="form-{i}-col_{j}" value="" required></td>\n'
+                        table_td = f'   <td><input type="number" min="1" max="{l}" name="form-{i}-col_{j}" id="row-{i}-col-{j}" value="" required></td>\n'
                     else:
-                        table_td = f'   <td><input type="number" min="1" max="{l}" name="form-{i}-col_{j}" value="{spot}" required></td>\n'
+                        table_td = f'   <td><input type="number" min="1" max="{l}" name="form-{i}-col_{j}" id="row-{i}-col-{j}" value="{spot}" required></td>\n'
                 # if readonly by user
                 else:
                     table_hidden = f'   <input type="hidden" value=\'\' name="_{i}_col_{j}">'
-                    table_td = f'   <td><input type="number" min="1" max="{l}" name="form-{i}-col_{j}" value="{spot}" readonly id="preset" class="preset_value"></td>\n'
+                    table_td = f'   <td><input type="number" min="1" max="{l}" name="form-{i}-col_{j}" value="{spot}" readonly id="row-{i}-col-{j}" class="preset_value"></td>\n'
                 self.formset.append(table_hidden)
                 self.formset.append(table_td)
             self.formset.append('</tr>')
