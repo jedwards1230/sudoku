@@ -29,7 +29,7 @@
             </div>
             <div class="col-5">
                 <select class="form-select" id="size_select" name="size" value="{{ config.size }}">
-                    {% for v in '234' %} {% if v == config.size|floatformat:"0" %}
+                    {% for v in '23456' %} {% if v == config.size|floatformat:"0" %}
                     <option value="{{ v }}" selected>{% widthratio v 1 v %}x{% widthratio v 1 v %}</option>
                     {% else %}
                     <option value="{{ v }}">{% widthratio v 1 v %}x{% widthratio v 1 v %}</option>
