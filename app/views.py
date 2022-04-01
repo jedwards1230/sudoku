@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-import sudoku_utils as su
+import app.sudoku_utils as su
 
 
 def index(request):
