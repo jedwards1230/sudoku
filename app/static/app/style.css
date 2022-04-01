@@ -20,7 +20,7 @@ td {
 }
 
 select {
-    min-width: 150px;
+    min-width: 110px;
 }
 
 .form-select {
@@ -66,7 +66,7 @@ input:disabled {
     
     input {
         color: #FAFAFA;
-        background-color: #222222;
+        background-color: #333333cc;
     }
     
     .preset_value {
