@@ -24,11 +24,9 @@ def index(request):
             puzzle, edits = su.to_python(request.POST)
             
             if puzzle and edits and delta_time:
-                print('post', int(request.POST.get('time')))
                 if su.check_solution(puzzle, context['config']['size']):
                     context['win'] = True
                     context['elapsed_time'] = str(delta_time)
-                    print('elapsed', context['elapsed_time'])
 
                 formset = su.new_formset(context['config']['size'], context['config']['difficulty'], puzzle, edits)
             else:
@@ -37,12 +35,10 @@ def index(request):
         elif request.POST.get('new_puzzle') == '1':
             formset = su.new_formset(context['config']['size'], context['config']['difficulty'])
             context['time'] = int(datetime.now().timestamp())
-            print('new', context['time'])
             
     else:
         formset = su.new_formset(context['config']['size'], context['config']['difficulty'])
         context['time'] = int(datetime.now().timestamp())
-        print('init', context['time'])
     
     context['puzzle'] = formset
         
