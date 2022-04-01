@@ -15,3 +15,4 @@ python manage.py runserver
 * fix formatting for large puzzles and small displays
 * fix max request size limit for boards larger than 9x9 while checking solution
 * format elapsed time to be readable
+* use database to track average time per puzzle by size and difficulty
