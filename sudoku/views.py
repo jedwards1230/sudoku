@@ -1,7 +1,7 @@
 from datetime import datetime
 from django.shortcuts import render
 
-import app.sudoku_utils as su
+import sudoku.sudoku_utils as su
 
 
 def index(request):
@@ -46,4 +46,4 @@ def index(request):
     
     context['puzzle'] = formset
         
-    return render(request, 'app/index.html', context)
+    return render(request, 'sudoku/index.html', context)
