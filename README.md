@@ -4,6 +4,11 @@
 A basic Django server that lets users play sudoku
 
 
+## features
+* board sizes ( 4x4 - 16x16 )
+* difficulties ( 0 - 6 ) ( 0% hidden - 75% hidden )
+
+
 ## to run
 ```
 python manage.py runserver
