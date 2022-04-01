@@ -6,6 +6,7 @@ class PuzzleForm():
         self.formset = []
         l = len(puzzle)
         
+        # create HTML tags for hidden inputs and number inputs for each row in puzzle
         for i, row in enumerate(puzzle):
             self.formset.append('<tr>')
             for j, spot in enumerate(row):

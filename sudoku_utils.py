@@ -5,7 +5,7 @@ from app.forms import PuzzleForm
 from sudoku import SudokuGenerator
 
 
-def print_grid(grid, label=None):
+def print_grid(grid: list, label: str = None):
     if label:
         print('\n** ' + label + ' **\n')
     for row in grid:
@@ -20,7 +20,7 @@ def print_grid(grid, label=None):
     print()
 
 # convert sudoku board from POST request to list of lists
-def to_python(request, size):
+def to_python(request):
     board = []
     row = []
     edits_board = []
@@ -28,16 +28,19 @@ def to_python(request, size):
     
     i = 0
     
+    size = request.get('size')
     l = size ** 2
     
     # extract puzzle from request
     for _, k in enumerate(request):
+        # create edits board
         if '_col_' in k:
             if request.get(k) == 'editable':
                 edits_row.append(1)
             else:
                 edits_row.append(0)
-                
+        
+        # recreate puzzle
         if '-col_' in k:
             i += 1
             value = request.getlist(k)
@@ -46,7 +49,7 @@ def to_python(request, size):
             else:
                 row.append(0)
             
-            # new row based on size
+            # track row size
             if i % l == 0 and i > 0:
                 board.append(row)
                 edits_board.append(edits_row)
@@ -54,14 +57,14 @@ def to_python(request, size):
                 edits_row = []
                 
     # check if board is malformed
-    for row in board:
-        if len(row) != l:
+    for p_row, e_row in zip(board, edits_board):
+        if len(p_row) != l or len(e_row) != l:
             return None
     
     return board, edits_board
 
 # check if puzzle is solved
-def check_solution(board, size):
+def check_solution(board: list, size: int):
     def valid_line(line):
         return (len(line) == side and sum(line) == sum(set(line)))
     
@@ -94,7 +97,7 @@ def check_solution(board, size):
             
     return True
 
-def new_formset(size: int, difficulty: int, puzzle=None, edits=None):
+def new_formset(size: int, difficulty: int, puzzle: list = None, edits: list = None):
     if not (puzzle and edits):
         gen = SudokuGenerator(size=size, difficulty=difficulty)
         puzzle, _ = gen.get_sudoku()
