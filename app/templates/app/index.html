@@ -20,7 +20,6 @@
         </br>
         <h1>Sudoku</h1>
         </br>
-        {% if puzzle.errors %} </br> {{ puzzle.errors }} </br> {% endif %}
 
         <form action="{% url 'index' %}" method="post" class="row row-cols-lg-auto justify-content-center">
             {% csrf_token %}
@@ -29,7 +28,7 @@
             </div>
             <div class="col-5">
                 <select class="form-select" id="size_select" name="size" value="{{ config.size }}">
-                    {% for v in '23456' %} {% if v == config.size|floatformat:"0" %}
+                    {% for v in '2345' %} {% if v == config.size|floatformat:"0" %}
                     <option value="{{ v }}" selected>{% widthratio v 1 v %}x{% widthratio v 1 v %}</option>
                     {% else %}
                     <option value="{{ v }}">{% widthratio v 1 v %}x{% widthratio v 1 v %}</option>
@@ -59,6 +58,7 @@
             {% if win == True %}
             <div class="alert alert-success alert-dismissible col mx-auto fade show" role="alert">
                 You win!
+                Time taken: {{ elapsed_time|safe }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
             {% elif win == False %}
@@ -71,6 +71,7 @@
         {% if puzzle %}
         <form action="{% url 'index' %}" method="post">
             {% csrf_token %}
+            <input type="hidden" name="time" value="{{ time }}">
             <input type="hidden" name="size" value="{{ config.size }}">
             <input type="hidden" name="difficulty" value="{{ config.difficulty }}">
             <table id="grid">
