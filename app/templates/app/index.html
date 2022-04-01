@@ -75,13 +75,7 @@
             <input type="hidden" name="difficulty" value="{{ config.difficulty }}">
             <table id="grid">
                 {% for row in puzzle %} {% with forloop.counter0 as outer_counter %}
-                <tr>
-                    {% for field in row %} {% if field.value %}
-                        <td><input type="number" name="form-{{ outer_counter }}-{{ field.name }}" value="{{ field.value}}" readonly id="preset" class="preset_value"></td>
-                    {% elif field.value == 0 %}
-                        <td><input type="number" name="form-{{ outer_counter }}-{{ field.name }}" value="" required min="1"></td>
-                    {% endif %}  {% endfor %}
-                </tr>
+                {{ row|safe}}
                 {% endwith %} {% endfor %}
             </table>
             </br>
@@ -89,9 +83,9 @@
         </form>
         {% endif %}
 
-        </br>        
+        </br>
     </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
