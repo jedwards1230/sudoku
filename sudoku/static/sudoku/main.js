@@ -68,7 +68,7 @@ function place_puzzle(request) {
         }
         puzzle_table.push('</tr>')
     }
-    
+
     success_alert(request.win, request.elapsed_time);
     $('#grid').html( puzzle_table );
 }
@@ -103,9 +103,9 @@ function success_alert(win, time) {
     // create HTML for alert
     alert_tag = [];
     if (win == true) {
-        alert_tag.push('<div class=\"alert alert-success mx-auto\" role=\"alert\"><h4 class="alert-heading">You win!</h4><p>Time taken: ' + time + '</p></div>');
+        alert_tag.push('<div class=\"alert alert-success mx-auto\" role=\"alert\"><h4 class="alert-heading">You win!</h4><p class="mb-0">Time taken: ' + time + '</p></div>');
     } else if (win == false) {
-        alert_tag.push('<div class=\"alert alert-danger mx-auto\" role=\"alert\"><h4 class="alert-heading">Try again!</h4><p>Time taken: ' + time + '</p></div>');
+        alert_tag.push('<div class=\"alert alert-danger mx-auto\" role=\"alert\"><h4 class="alert-heading">Try again!</h4><p class="mb-0">Time taken: ' + time + '</p></div>');
     }
 
     // clear success section and replace
