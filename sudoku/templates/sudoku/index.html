@@ -59,24 +59,7 @@
         </form>
         </br>
 
-        {% if win %}
-        <!--
-            Success Section
-        -->
-        <div class="row">
-            {% if win == True %}
-            <div class="alert alert-success alert-dismissible col mx-auto fade show" role="alert">
-                You win!
-                Time taken: {{ elapsed_time|safe }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            {% elif win == False %}
-            <div class="alert alert-danger col mx-auto" role="alert">
-                Try again
-            </div>
-            {% endif %}
-        </div>
-        {% endif %}
+        <div id='success'></div>
 
         <!--
             Puzzle Section

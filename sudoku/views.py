@@ -23,13 +23,11 @@ def index(request):
             
             time = int(datetime.now().timestamp())
             context['time'] = int(request.POST.get('time'))
+            delta_time = time - context['time']
+            context['elapsed_time'] = str(delta_time)
             
             if puzzle:
-                if su.check_solution(puzzle, context['size']):
-                    delta_time = time - context['time']
-                    context['win'] = True
-                    context['elapsed_time'] = str(delta_time)
-                
+                context['win'] = su.check_solution(puzzle, context['size'])
                 context['puzzle'] = puzzle
                 
                 return HttpResponse(json.dumps(context), content_type="application/json")

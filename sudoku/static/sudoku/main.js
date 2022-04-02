@@ -1,10 +1,10 @@
 // submit POST to check if puzzle is solved
 function submit_puzzle() {
-    console.log("submitting puzzle")
-    size = $('#size').attr('value')
-    difficulty = $('#difficulty').attr('value')
-    create_time = $('#time').attr('value')
-    csrf_token = document.getElementsByName('csrfmiddlewaretoken')[0].value
+    console.log("Submitting puzzle for evaluation");
+    size = $('#size').attr('value');
+    difficulty = $('#difficulty').attr('value');
+    create_time = $('#time').attr('value');
+    csrf_token = document.getElementsByName('csrfmiddlewaretoken')[0].value;
 
     $.ajax({
         type: 'post',
@@ -18,7 +18,8 @@ function submit_puzzle() {
             'time': create_time,
         },
         success: function(request) {
-            console.log('puzzle checked');
+            console.log('Puzzle evaluated');
+            console.log(request);
             place_puzzle(request);
         },
     })
@@ -27,19 +28,18 @@ function submit_puzzle() {
 
 // gather puzzle info from DOM
 function get_puzzle(size) {
-    console.log('gathering puzzle data from DOM')
-    board_len = size * size
-    count = 0
-    puzzle = []
-    row = ''
+    board_len = size * size;
+    count = 0;
+    puzzle = [];
+    row = '';
     $("#puzzle_form #grid input[type=number]").each(function(index) {
-        row_i = index % board_len
+        row_i = index % board_len;
         val = this.value;
-        row += val
+        row += val;
         if(row_i == board_len - 1 && index > 0) {
             count += 1;
-            puzzle.push(row)
-            row = ''
+            puzzle.push(row);
+            row = '';
         }
     });
 
@@ -48,22 +48,15 @@ function get_puzzle(size) {
 
 // place puzzle into DOM
 function place_puzzle(request) {
-    console.log('placing puzzle')
-    console.log(request);
+    console.log('Arranging puzzle');
     puzzle = request.puzzle;
     $('#time').val(request.time);
     $('#size').val(request.size);
     $('#difficulty').val(request.difficulty);
 
-    if (request.win) {
-        win = request.win;
-        elapsed_time = request.elapsed_time;
-        alert('Success! Seconds taken: ' + elapsed_time)
-    }
-
     board_len = size * size;
     count = 0;
-    puzzle_table = []
+    puzzle_table = [];
     for (i in puzzle) {
         puzzle_table.push('<tr>');
         for (j in puzzle[i]) {
@@ -75,18 +68,18 @@ function place_puzzle(request) {
         }
         puzzle_table.push('</tr>')
     }
-    $('#grid').empty();
-    $('#grid').append( puzzle_table );
+    
+    success_alert(request.win, request.elapsed_time);
+    $('#grid').html( puzzle_table );
 }
 
 // request new puzzle with POST
 function new_puzzle() {
-    console.log("new puzzle requested")
     size = $('#size_select').find(":selected").attr('value');
     difficulty = $('#difficulty_select').find(":selected").attr('value');
     csrf_token = document.getElementsByName('csrfmiddlewaretoken')[0].value
 
-    console.log('size: ' + size + ' | difficulty: ' + difficulty)
+    console.log('New puzzle request: (size : ' + size + ') (difficulty : ' + difficulty + ')');
 
     $.ajax({
         type: 'post',
@@ -98,11 +91,30 @@ function new_puzzle() {
             'difficulty': difficulty,
         },
         success: function(request) {
-            console.log('new puzzle received');
+            console.log('New puzzle received');
+            console.log(request);
             place_puzzle(request);
         },
     })
     return
+}
+
+function success_alert(win, time) {
+    // create HTML for alert
+    alert_tag = [];
+    if (win == true) {
+        alert_tag.push('<div class=\"alert alert-success mx-auto\" role=\"alert\"><h4 class="alert-heading">You win!</h4><p>Time taken: ' + time + '</p></div>');
+    } else if (win == false) {
+        alert_tag.push('<div class=\"alert alert-danger mx-auto\" role=\"alert\"><h4 class="alert-heading">Try again!</h4><p>Time taken: ' + time + '</p></div>');
+    }
+
+    // clear success section and replace
+    $('#success').html(alert_tag);
+
+    // clear alert on click
+    $('#success').click(function(){
+        $('#success').empty();
+    });
 }
 
 // prepare submit buttons
