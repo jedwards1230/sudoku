@@ -62,15 +62,14 @@ function get_puzzle(size) {
     board_len = size * size;
     count = 0;
     puzzle = [];
-    row = '';
+    row = [];
     $("#puzzle_form #grid input[type=number]").each(function(index) {
         row_i = index % board_len;
-        val = this.value;
-        row += val;
+        row.push(this.value);
         if(row_i == board_len - 1 && index > 0) {
             count += 1;
             puzzle.push(row);
-            row = '';
+            row = [];
         }
     });
 
