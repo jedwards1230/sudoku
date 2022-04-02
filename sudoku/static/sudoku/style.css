@@ -3,6 +3,15 @@ body {
     background-color: #FAFAFA
 }
 
+a {
+    text-decoration: none;
+    color: #222222;
+}
+
+a:hover {
+    color: #222222;
+}
+
 table {
     border: 2px solid #000000;
     margin-left: auto;
@@ -48,6 +57,14 @@ input:disabled {
     html,
     body {
         background-color: #121212;
+        color: #FAFAFA;
+    }
+    
+    a {
+        color: #FAFAFA;
+    }
+
+    a:hover {
         color: #FAFAFA;
     }
 

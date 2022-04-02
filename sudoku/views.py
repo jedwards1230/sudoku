@@ -9,8 +9,8 @@ import sudoku.sudoku_utils as su
 
 def index(request):
     context = {
-        'size': 2,
-        'difficulty': 1,
+        'size': 3,
+        'difficulty': 4,
         'time': int(datetime.now().timestamp()),
     }
     
