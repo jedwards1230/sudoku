@@ -1,4 +1,5 @@
 // submit POST to check if puzzle is solved
+// displays alert
 function submit_puzzle() {
     console.log("Submitting puzzle for evaluation");
     size = $('#size').attr('value');
@@ -20,14 +21,43 @@ function submit_puzzle() {
         success: function(request) {
             console.log('Puzzle evaluated');
             console.log(request);
-            place_puzzle(request);
             success_alert(request.win, request.elapsed_time);
         },
     })
     return
 }
 
+// display alert for win/loss
+function success_alert(win, time) {
+    // clear any success notifications
+    $('#success').empty()
+
+    if (win == true) {
+        $('#success').append(
+            $('<div/>', {'class': 'alert alert-success mx-auto', 'role': 'alert'}).append(
+                $('<h4/>', {'class': 'alert-heading', text: 'You win!'})
+            ).append(
+                $('<p/>', {'class': 'mb-0', text: 'Time taken: ' + time})
+            )
+        );
+    } else if (win == false) {
+        $('#success').append(
+            $('<div/>', {'class': 'alert alert-danger mx-auto', 'role': 'alert'}).append(
+                $('<h4/>', {'class': 'alert-heading', text: 'Try again'})
+            ).append(
+                $('<p/>', {'class': 'mb-0', text: 'Time taken: ' + time})
+            )
+        );
+    }
+
+    // clear alert on click
+    $('#success').click(function(){
+        $('#success').empty();
+    });
+}
+
 // gather puzzle info from DOM
+// returns puzzle as array
 function get_puzzle(size) {
     board_len = size * size;
     count = 0;
@@ -60,15 +90,15 @@ function place_puzzle(request) {
     $('#grid').empty();
     for (i in puzzle) {
         $('#grid').append('<tr/>');
-        // if value is 0, set a blank spot
-        // TODO: track edits values to retain edit capability
         for (j in puzzle[i]) {
+            // if value is 0, set a blank spot
             if (puzzle[i][j] == 0) {
                 $('#grid').append(
                     $('<td/>').append(
                         $('<input/>', {'type': 'number', 'min': '1', 'max': board_len, 'id': 'row-' + i + '-col-' + j, required: true, 'value': ''})
                     )
                 );
+            // else display actual value
             } else {
                 $('#grid').append(
                     $('<td/>').append(
@@ -82,6 +112,7 @@ function place_puzzle(request) {
 
 // request new puzzle with POST
 function new_puzzle() {
+    // clear any success notifications
     $('#success').empty();
     size = $('#size_select').find(":selected").attr('value');
     difficulty = $('#difficulty_select').find(":selected").attr('value');
@@ -105,35 +136,6 @@ function new_puzzle() {
         },
     })
     return
-}
-
-function success_alert(win, time) {
-    // create HTML for alert
-    alert_tag = [];
-    $('#success').empty()
-
-    if (win == true) {
-        $('#success').append(
-            $('<div/>', {'class': 'alert alert-success mx-auto', 'role': 'alert'}).append(
-                $('<h4/>', {'class': 'alert-heading', text: 'You win!'})
-            ).append(
-                $('<p/>', {'class': 'mb-0', text: 'Time taken: ' + time})
-            )
-        );
-    } else if (win == false) {
-        $('#success').append(
-            $('<div/>', {'class': 'alert alert-danger mx-auto', 'role': 'alert'}).append(
-                $('<h4/>', {'class': 'alert-heading', text: 'Try again'})
-            ).append(
-                $('<p/>', {'class': 'mb-0', text: 'Time taken: ' + time})
-            )
-        );
-    }
-
-    // clear alert on click
-    $('#success').click(function(){
-        $('#success').empty();
-    });
 }
 
 // prepare submit buttons

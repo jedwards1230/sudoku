@@ -28,7 +28,6 @@ def index(request):
             
             if puzzle:
                 context['win'] = su.check_solution(puzzle, context['size'])
-                context['puzzle'] = puzzle
                 
                 return HttpResponse(json.dumps(context), content_type="application/json")
             else:
