@@ -10,7 +10,7 @@ function submit_puzzle() {
     $.ajax({
         type: 'post',
         url: '',
-        data: { 
+        data: {
             'submit_puzzle': true,
             'puzzle[]': get_puzzle(size),
             'csrfmiddlewaretoken': csrf_token,
@@ -18,7 +18,7 @@ function submit_puzzle() {
             'difficulty': difficulty,
             'time': create_time,
         },
-        success: function(request) {
+        success: function (request) {
             console.log('Puzzle evaluated');
             console.log(request);
             success_alert(request.win, request.elapsed_time);
@@ -34,24 +34,42 @@ function success_alert(win, time) {
 
     if (win == true) {
         $('#success').append(
-            $('<div/>', {'class': 'alert alert-success mx-auto', 'role': 'alert'}).append(
-                $('<h4/>', {'class': 'alert-heading', text: 'You win!'})
+            $('<div/>', {
+                'class': 'alert alert-success mx-auto',
+                'role': 'alert'
+            }).append(
+                $('<h4/>', {
+                    'class': 'alert-heading',
+                    text: 'You win!'
+                })
             ).append(
-                $('<p/>', {'class': 'mb-0', text: 'Time taken: ' + time})
+                $('<p/>', {
+                    'class': 'mb-0',
+                    text: 'Time taken: ' + time
+                })
             )
         );
     } else if (win == false) {
         $('#success').append(
-            $('<div/>', {'class': 'alert alert-danger mx-auto', 'role': 'alert'}).append(
-                $('<h4/>', {'class': 'alert-heading', text: 'Try again'})
+            $('<div/>', {
+                'class': 'alert alert-danger mx-auto',
+                'role': 'alert'
+            }).append(
+                $('<h4/>', {
+                    'class': 'alert-heading',
+                    text: 'Try again'
+                })
             ).append(
-                $('<p/>', {'class': 'mb-0', text: 'Time taken: ' + time})
+                $('<p/>', {
+                    'class': 'mb-0',
+                    text: 'Time taken: ' + time
+                })
             )
         );
     }
 
     // clear alert on click
-    $('#success').click(function(){
+    $('#success').click(function () {
         $('#success').empty();
     });
 }
@@ -63,10 +81,10 @@ function get_puzzle(size) {
     count = 0;
     puzzle = [];
     row = [];
-    $("#puzzle_form #grid input[type=number]").each(function(index) {
+    $("#puzzle_form #grid input[type=number]").each(function (index) {
         row_i = index % board_len;
         row.push(this.value);
-        if(row_i == board_len - 1 && index > 0) {
+        if (row_i == board_len - 1 && index > 0) {
             count += 1;
             puzzle.push(row);
             row = [];
@@ -94,14 +112,39 @@ function place_puzzle(request) {
             if (puzzle[i][j] == 0) {
                 $('#grid').append(
                     $('<td/>').append(
-                        $('<input/>', {'type': 'number', 'min': '1', 'max': board_len, 'id': 'row-' + i + '-col-' + j, required: true, 'value': ''})
+                        $('<input/>', {
+                            'type': 'number',
+                            'min': '1',
+                            'max': board_len,
+                            'id': 'row-' + i + '-col-' + j,
+                            required: true,
+                            'value': ''
+                        })
+                    ).append(
+                        $('<label/>', {
+                            'for': 'row-' + i + '-col-' + j,
+                            'value': '',
+                        })
                     )
                 );
             // else display actual value
             } else {
                 $('#grid').append(
                     $('<td/>').append(
-                        $('<input/>', {'type': 'number', 'min': '1', 'max': board_len, 'id': 'row-' + i + '-col-' + j, readonly: true, 'value': puzzle[i][j], 'class': 'preset_value'})
+                        $('<input/>', {
+                            'type': 'number',
+                            'min': '1',
+                            'max': board_len,
+                            'id': 'row-' + i + '-col-' + j,
+                            readonly: true,
+                            'value': puzzle[i][j],
+                            'class': 'preset_value'
+                        })
+                    ).append(
+                        $('<label/>', {
+                            'for': 'row-' + i + '-col-' + j,
+                            'value': puzzle[i][j],
+                        })
                     )
                 );
             }
@@ -122,13 +165,13 @@ function new_puzzle() {
     $.ajax({
         type: 'post',
         url: '',
-        data: { 
+        data: {
             'new_puzzle': true,
             'csrfmiddlewaretoken': csrf_token,
             'size': size,
             'difficulty': difficulty,
         },
-        success: function(request) {
+        success: function (request) {
             console.log('New puzzle received');
             console.log(request);
             place_puzzle(request);
@@ -138,13 +181,12 @@ function new_puzzle() {
 }
 
 // prepare submit buttons
-$(document).ready(function()
-{
-    $('#config_form').submit(function(event) {
+$(document).ready(function () {
+    $('#config_form').submit(function (event) {
         event.preventDefault();
         new_puzzle();
     });
-    $('#puzzle_form').submit(function(event) {
+    $('#puzzle_form').submit(function (event) {
         event.preventDefault();
         submit_puzzle();
     });
