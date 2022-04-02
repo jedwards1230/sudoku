@@ -2,6 +2,7 @@ from datetime import datetime
 import json
 from django.http import HttpResponse
 from django.shortcuts import render
+from sudoku.sudoku import SudokuGenerator
 
 import sudoku.sudoku_utils as su
 
@@ -35,8 +36,7 @@ def index(request):
             
         # generate new puzzle
         elif request.POST.get('new_puzzle'):
-            # TODO: large board get buggy
-            context['puzzle'] = su.new_puzzle(context['size'], context['difficulty'])
+            context['puzzle'] = SudokuGenerator(context['size'], context['difficulty']).board_puzzle
             
             return HttpResponse(json.dumps(context), content_type="application/json")
             

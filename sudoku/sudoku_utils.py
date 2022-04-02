@@ -1,22 +1,4 @@
 import itertools
-
-from .sudoku import SudokuGenerator
-
-
-# TODO: update for new board format
-def print_grid(grid: list, label: str = None):
-    if label:
-        print('\n** ' + label + ' **\n')
-    for row in grid:
-        for x in row:
-            if x == None:
-                raise ValueError('Invalid cell input')
-            if x == 0 or x == None:
-                print('_  ', end='')
-            else:
-                print(str(x) + '  ', end='')
-        print()
-    print()
             
 
 # check if puzzle is solved
@@ -60,16 +42,3 @@ def check_solution(board: list, size: int):
     if not bad_squares: return False
             
     return True
-
-def new_puzzle(size: int, difficulty: int):
-    gen = SudokuGenerator(size=size, difficulty=difficulty)
-    board = gen.board_puzzle
-    
-    puzzle = []
-    for row in board:
-        x = ''
-        for n in row:
-            x += str(n)
-        puzzle.append(x)
-        
-    return puzzle
