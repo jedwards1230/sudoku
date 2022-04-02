@@ -1,7 +1,5 @@
 import itertools
 
-from .forms import PuzzleForm
-
 from .sudoku import SudokuGenerator
 
 
@@ -63,7 +61,7 @@ def check_solution(board: list, size: int):
             
     return True
 
-def new_puz(size: int, difficulty: int):
+def new_puzzle(size: int, difficulty: int):
     gen = SudokuGenerator(size=size, difficulty=difficulty)
     board = gen.board_puzzle
     
@@ -75,20 +73,3 @@ def new_puz(size: int, difficulty: int):
         puzzle.append(x)
         
     return puzzle
-
-def new_formset(size: int, difficulty: int, puzzle: list = None, edits: list = None):
-    if not (puzzle and edits):
-        gen = SudokuGenerator(size=size, difficulty=difficulty)
-        puzzle = gen.board_puzzle
-        
-        edits = []
-        for row in puzzle:
-            r = []
-            for i in row:
-                if i == 0:
-                    r.append(1)
-                else:
-                    r.append(0)
-            edits.append(r)
-    
-    return PuzzleForm(puzzle, edits).get_formset()

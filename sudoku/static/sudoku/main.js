@@ -68,9 +68,9 @@ function place_puzzle(request) {
         puzzle_table.push('<tr>');
         for (j in puzzle[i]) {
             if (puzzle[i][j] == 0) {
-                puzzle_table.push('<td><input type=\"number\" min=\"1\" max=\"' + board_len + ' name=\"form-' + i + '-col_' + j + '\" id=\"row-' + i + '-col-' + j + '\" value=\"\" required></td>\n')
+                puzzle_table.push('<td><input type=\"number\" min=\"1\" max=\"' + board_len + '\" id=\"row-' + i + '-col-' + j + '\" required value=\"\"></td>\n')
             } else {
-                puzzle_table.push('<td><input type=\"number\" min=\"1\" max=\"' + board_len + '\" name=\"form-' + i + '-col_' + j + '\" value=\"' + puzzle[i][j] + '\" readonly id=\"row-' + i + '-col-' + j + '\" class=\"preset_value\"></td>\n')
+                puzzle_table.push('<td><input type=\"number\" min=\"1\" max=\"' + board_len + '\" id=\"row-' + i + '-col-' + j + '\" readonly value=\"' + puzzle[i][j] + '\" class=\"preset_value\"></td>\n')
             }
         }
         puzzle_table.push('</tr>')

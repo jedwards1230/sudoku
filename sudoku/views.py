@@ -34,15 +34,14 @@ def index(request):
                 
                 return HttpResponse(json.dumps(context), content_type="application/json")
             else:
-                raise ValueError('Missing puzzle or delta time')
+                raise ValueError('Missing puzzle')
+            
         # generate new puzzle
-        # TODO: large board get buggy
         elif request.POST.get('new_puzzle'):
-            context['puzzle'] = su.new_puz(context['size'], context['difficulty'])
+            # TODO: large board get buggy
+            context['puzzle'] = su.new_puzzle(context['size'], context['difficulty'])
             
             return HttpResponse(json.dumps(context), content_type="application/json")
             
     else:
-        context['puzzle'] = su.new_puz(context['size'], context['difficulty'])
-        
         return render(request, 'sudoku/index.html', context)
