@@ -3,6 +3,7 @@ import itertools
 from .sudoku import SudokuGenerator
 
 
+# TODO: update for new board format
 def print_grid(grid: list, label: str = None):
     if label:
         print('\n** ' + label + ' **\n')
@@ -27,7 +28,7 @@ def check_solution(board: list, size: int):
         try:
             line = [int(x) for x in line]
         except:
-            print(line, type(line))
+            raise ValueError(line, type(line))
         return (len(line) == side and sum(line) == sum(set(line)))
     
     # check rows
@@ -35,7 +36,6 @@ def check_solution(board: list, size: int):
     for row in board:
         for x in row:
             x = int(x)
-            print(x)
             # check every value is int
             if not isinstance(x, int): return False
             # check value within proper range
