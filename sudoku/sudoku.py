@@ -19,8 +19,6 @@ class SudokuGenerator:
         self.board_solution = self.get_solution()
         self.board_puzzle = self.get_puzzle(self.board_solution, difficulty)
     
-    def get_sudoku(self): return self.board_puzzle, self.board_solution
-    
     def get_solution(self):
         rBase = range(self.base) 
         # shuffle by inner groups (typically 3x3 in a 9x9 board)

@@ -18,61 +18,26 @@ def print_grid(grid: list, label: str = None):
                 print(str(x) + '  ', end='')
         print()
     print()
-
-# convert sudoku board from POST request to list of lists
-def to_python(request):
-    board = []
-    row = []
-    edits_board = []
-    edits_row = []
-    
-    i = 0
-    
-    size = int(request.get('size'))
-    l = size ** 2
-    
-    # extract puzzle from request
-    for _, k in enumerate(request):
-        # create edits board
-        if '_col_' in k:
-            if request.get(k) == 'editable':
-                edits_row.append(1)
-            else:
-                edits_row.append(0)
-        
-        # recreate puzzle
-        if '-col_' in k:
-            i += 1
-            value = request.getlist(k)
-            if value[0]:
-                row.append(int(value[0]))
-            else:
-                row.append(0)
             
-            # track row size
-            if i % l == 0 and i > 0:
-                board.append(row)
-                edits_board.append(edits_row)
-                row = []
-                edits_row = []
-                
-    # check if board is malformed
-    for p_row, e_row in zip(board, edits_board):
-        if len(p_row) != l or len(e_row) != l:
-            return None
-    
-    return board, edits_board
 
 # check if puzzle is solved
 def check_solution(board: list, size: int):
     def valid_line(line):
+        if len(line) == 3:
+            s= ''
+        line = set(line)
+        try:
+            line = [int(x) for x in line]
+        except:
+            print(line, type(line))
         return (len(line) == side and sum(line) == sum(set(line)))
     
-    side = len(board)
-    
     # check rows
+    side = len(board)
     for row in board:
         for x in row:
+            x = int(x)
+            print(x)
             # check every value is int
             if not isinstance(x, int): return False
             # check value within proper range
@@ -82,6 +47,7 @@ def check_solution(board: list, size: int):
     
     # check cols
     board = list(zip(*board))
+        
     for col in board:
         # check values are unique
         if not valid_line(col): return False
@@ -92,15 +58,28 @@ def check_solution(board: list, size: int):
         for j in range(0, side, size):
             square = list(itertools.chain(row[j:j+3] for row in board[i:i+3]))
             squares.append(square)
-    bad_squares = [square for square in squares if not valid_line(square)]
+    bad_squares = [square for line in square for square in squares if not valid_line(list(line))]
     if not bad_squares: return False
             
     return True
 
+def new_puz(size: int, difficulty: int):
+    gen = SudokuGenerator(size=size, difficulty=difficulty)
+    board = gen.board_puzzle
+    
+    puzzle = []
+    for row in board:
+        x = ''
+        for n in row:
+            x += str(n)
+        puzzle.append(x)
+        
+    return puzzle
+
 def new_formset(size: int, difficulty: int, puzzle: list = None, edits: list = None):
     if not (puzzle and edits):
         gen = SudokuGenerator(size=size, difficulty=difficulty)
-        puzzle, _ = gen.get_sudoku()
+        puzzle = gen.board_puzzle
         
         edits = []
         for row in puzzle:

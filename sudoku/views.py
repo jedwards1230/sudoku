@@ -1,4 +1,6 @@
 from datetime import datetime
+import json
+from django.http import HttpResponse
 from django.shortcuts import render
 
 import sudoku.sudoku_utils as su
@@ -6,40 +8,41 @@ import sudoku.sudoku_utils as su
 
 def index(request):
     context = {
-        'config': {
-            'size': 3,
-            'difficulty': 0,
-        },
+        'size': 2,
+        'difficulty': 1,
+        'time': int(datetime.now().timestamp()),
     }
     
     if request.method == 'POST':
-        context['config']['size'] = int(request.POST.get('size'))
-        context['config']['difficulty'] = int(request.POST.get('difficulty'))
+        context['size'] = int(request.POST.get('size'))
+        context['difficulty'] = int(request.POST.get('difficulty'))
         
         # check submitted puzzle
-        if request.POST.get('submit_puzzle') == '1':
-            time = int(datetime.now().timestamp())
-            start_time = int(request.POST.get('time')) or None
-            delta_time = time - start_time
-            puzzle, edits = su.to_python(request.POST)
+        if request.POST.get('submit_puzzle'):
+            puzzle = request.POST.getlist('puzzle[]')
             
-            if puzzle and edits and delta_time:
-                if su.check_solution(puzzle, context['config']['size']):
+            time = int(datetime.now().timestamp())
+            context['time'] = int(request.POST.get('time'))
+            
+            if puzzle:
+                if su.check_solution(puzzle, context['size']):
+                    delta_time = time - context['time']
                     context['win'] = True
                     context['elapsed_time'] = str(delta_time)
-
-                formset = su.new_formset(context['config']['size'], context['config']['difficulty'], puzzle, edits)
+                
+                context['puzzle'] = puzzle
+                
+                return HttpResponse(json.dumps(context), content_type="application/json")
             else:
-                context['invalid_submission'] = 'There was an error validating the board.'
+                raise ValueError('Missing puzzle or delta time')
         # generate new puzzle
-        elif request.POST.get('new_puzzle') == '1':
-            formset = su.new_formset(context['config']['size'], context['config']['difficulty'])
-            context['time'] = int(datetime.now().timestamp())
+        # TODO: large board get buggy
+        elif request.POST.get('new_puzzle'):
+            context['puzzle'] = su.new_puz(context['size'], context['difficulty'])
+            
+            return HttpResponse(json.dumps(context), content_type="application/json")
             
     else:
-        formset = su.new_formset(context['config']['size'], context['config']['difficulty'])
-        context['time'] = int(datetime.now().timestamp())
-    
-    context['puzzle'] = formset
+        context['puzzle'] = su.new_puz(context['size'], context['difficulty'])
         
-    return render(request, 'sudoku/index.html', context)
+        return render(request, 'sudoku/index.html', context)

@@ -15,6 +15,8 @@
 </head>
 
 <body>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'sudoku/main.js' %}"></script>
 
     <div class="container text-center">
         </br>
@@ -24,14 +26,14 @@
         <!--
             Config Section
         -->
-        <form action="{% url 'index' %}" method="post" class="row row-cols-lg-auto justify-content-center">
+        <form action="{% url 'index' %}" method="post" id="config_form" class="row row-cols-lg-auto justify-content-center">
             {% csrf_token %}
             <div class="col-1 pe-0 my-auto">
                 <label for="size_select">Size</label>
             </div>
             <div class="col-2">
-                <select class="form-select" id="size_select" name="size" value="{{ config.size }}">
-                    {% for v in '2345' %} {% if v == config.size|floatformat:"0" %}
+                <select class="form-select" id="size_select" name="size" value="{{ size }}">
+                    {% for v in '2345' %} {% if v == size|floatformat:"0" %}
                     <option value="{{ v }}" selected>{% widthratio v 1 v %}x{% widthratio v 1 v %}</option>
                     {% else %}
                     <option value="{{ v }}">{% widthratio v 1 v %}x{% widthratio v 1 v %}</option>
@@ -42,8 +44,8 @@
                 <label for="difficulty_select">Difficulty</label>
             </div>
             <div class="col-2">
-                <select class="form-select" id="difficulty_select" name="difficulty" value="{{ config.difficulty }}">
-                    {% for v in '0123456' %} {% if v == config.difficulty|floatformat:"0" %}
+                <select class="form-select" id="difficulty_select" name="difficulty" value="{{ difficulty }}">
+                    {% for v in '0123456' %} {% if v == difficulty|floatformat:"0" %}
                     <option value="{{ v }}" selected>{{ v }}</option>
                     {% else %}
                     <option value="{{ v }}">{{ v }}</option>
@@ -52,11 +54,12 @@
             </div>
             <div class="col-2">
                 <label for="new_puzzle"></br></label>
-                <button class="btn btn-primary" value="1" type="submit" name='new_puzzle'>New</button>
+                <button class="btn btn-primary" value="1" id="config_btn" type="submit" name='new_puzzle'>New</button>
             </div>
         </form>
         </br>
 
+        {% if win %}
         <!--
             Success Section
         -->
@@ -73,31 +76,28 @@
             </div>
             {% endif %}
         </div>
+        {% endif %}
 
         <!--
             Puzzle Section
         -->
         {% if puzzle %}
-        <form action="{% url 'index' %}" method="post" id="puzzle">
+        <form action="{% url 'index' %}" method="post" id="puzzle_form">
             {% csrf_token %}
-            <input type="hidden" name="time" value="{{ time }}">
-            <input type="hidden" name="size" id="size" value="{{ config.size }}">
-            <input type="hidden" name="difficulty" value="{{ config.difficulty }}">
+            <input type="hidden" name="time" id="time" value="{{ time }}">
+            <input type="hidden" name="size" id="size" value="{{ size }}">
+            <input type="hidden" name="difficulty" id="difficulty" value="{{ difficulty }}">
             <table id="grid">
-                {% for row in puzzle %} {% with forloop.counter0 as outer_counter %}
-                {{ row|safe}}
-                {% endwith %} {% endfor %}
+                <script>new_puzzle()</script>
             </table>
             </br>
-            <button class="btn btn-success" type="submit" value="1" name='submit_puzzle'>Check</button>
+            <button class="btn btn-success" type="submit" id="submit_btn" value="1" name='submit_puzzle'>Check</button>
         </form>
         {% endif %}
 
         </br>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="{% static 'sudoku/main.js' %}"></script>
 </body>
 
 </html>
