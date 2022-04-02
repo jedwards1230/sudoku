@@ -18,6 +18,5 @@ python manage.py runserver
 ## to do
 * clearly display sub grids
 * highlight values in same row, column, and sub grid
-* fix formatting for large puzzles and small displays
 * format elapsed time to be readable
 * use database to track average time per puzzle by size and difficulty
