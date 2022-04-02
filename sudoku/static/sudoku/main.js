@@ -21,6 +21,7 @@ function submit_puzzle() {
             console.log('Puzzle evaluated');
             console.log(request);
             place_puzzle(request);
+            success_alert(request.win, request.elapsed_time);
         },
     })
     return
@@ -56,25 +57,32 @@ function place_puzzle(request) {
 
     board_len = size * size;
     count = 0;
-    puzzle_table = [];
+    $('#grid').empty();
     for (i in puzzle) {
-        puzzle_table.push('<tr>');
+        $('#grid').append('<tr/>');
+        // if value is 0, set a blank spot
+        // TODO: track edits values to retain edit capability
         for (j in puzzle[i]) {
             if (puzzle[i][j] == 0) {
-                puzzle_table.push('<td><input type=\"number\" min=\"1\" max=\"' + board_len + '\" id=\"row-' + i + '-col-' + j + '\" required value=\"\"></td>\n')
+                $('#grid').append(
+                    $('<td/>').append(
+                        $('<input/>', {'type': 'number', 'min': '1', 'max': board_len, 'id': 'row-' + i + '-col-' + j, required: true, 'value': ''})
+                    )
+                );
             } else {
-                puzzle_table.push('<td><input type=\"number\" min=\"1\" max=\"' + board_len + '\" id=\"row-' + i + '-col-' + j + '\" readonly value=\"' + puzzle[i][j] + '\" class=\"preset_value\"></td>\n')
+                $('#grid').append(
+                    $('<td/>').append(
+                        $('<input/>', {'type': 'number', 'min': '1', 'max': board_len, 'id': 'row-' + i + '-col-' + j, readonly: true, 'value': puzzle[i][j], 'class': 'preset_value'})
+                    )
+                );
             }
         }
-        puzzle_table.push('</tr>')
     }
-
-    success_alert(request.win, request.elapsed_time);
-    $('#grid').html( puzzle_table );
 }
 
 // request new puzzle with POST
 function new_puzzle() {
+    $('#success').empty();
     size = $('#size_select').find(":selected").attr('value');
     difficulty = $('#difficulty_select').find(":selected").attr('value');
     csrf_token = document.getElementsByName('csrfmiddlewaretoken')[0].value
@@ -102,14 +110,25 @@ function new_puzzle() {
 function success_alert(win, time) {
     // create HTML for alert
     alert_tag = [];
-    if (win == true) {
-        alert_tag.push('<div class=\"alert alert-success mx-auto\" role=\"alert\"><h4 class="alert-heading">You win!</h4><p class="mb-0">Time taken: ' + time + '</p></div>');
-    } else if (win == false) {
-        alert_tag.push('<div class=\"alert alert-danger mx-auto\" role=\"alert\"><h4 class="alert-heading">Try again!</h4><p class="mb-0">Time taken: ' + time + '</p></div>');
-    }
+    $('#success').empty()
 
-    // clear success section and replace
-    $('#success').html(alert_tag);
+    if (win == true) {
+        $('#success').append(
+            $('<div/>', {'class': 'alert alert-success mx-auto', 'role': 'alert'}).append(
+                $('<h4/>', {'class': 'alert-heading', text: 'You win!'})
+            ).append(
+                $('<p/>', {'class': 'mb-0', text: 'Time taken: ' + time})
+            )
+        );
+    } else if (win == false) {
+        $('#success').append(
+            $('<div/>', {'class': 'alert alert-danger mx-auto', 'role': 'alert'}).append(
+                $('<h4/>', {'class': 'alert-heading', text: 'Try again'})
+            ).append(
+                $('<p/>', {'class': 'mb-0', text: 'Time taken: ' + time})
+            )
+        );
+    }
 
     // clear alert on click
     $('#success').click(function(){
