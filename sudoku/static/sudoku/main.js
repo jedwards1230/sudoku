@@ -20,7 +20,6 @@ function submit_puzzle() {
         },
         success: function (request) {
             console.log('Puzzle evaluated');
-            console.log(request);
             success_alert(request.win, request.elapsed_time);
         },
     })
@@ -33,6 +32,7 @@ function success_alert(win, time) {
     $('#success').empty()
 
     if (win == true) {
+        console.log('Puzzle solved!')
         $('#success').append(
             $('<div/>', {
                 'class': 'alert alert-success mx-auto',
@@ -50,6 +50,7 @@ function success_alert(win, time) {
             )
         );
     } else if (win == false) {
+        console.log('Invalid puzzle submission!')
         $('#success').append(
             $('<div/>', {
                 'class': 'alert alert-danger mx-auto',
@@ -173,7 +174,6 @@ function new_puzzle() {
         },
         success: function (request) {
             console.log('New puzzle received');
-            console.log(request);
             place_puzzle(request);
         },
     })
