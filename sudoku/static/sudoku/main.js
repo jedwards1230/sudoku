@@ -1,7 +1,6 @@
 // submit POST to check if puzzle is solved
 // displays alert
-function submit_puzzle() {
-    console.log("Submitting puzzle for evaluation");
+function submit_puzzle(puzzle) {
     size = $('#size').attr('value');
     difficulty = $('#difficulty').attr('value');
     create_time = $('#time').attr('value');
@@ -12,16 +11,16 @@ function submit_puzzle() {
         url: '',
         data: {
             'submit_puzzle': true,
-            'puzzle[]': get_puzzle(size),
+            'puzzle[]': puzzle,
             'csrfmiddlewaretoken': csrf_token,
             'size': size,
             'difficulty': difficulty,
             'time': create_time,
         },
         success: function (request) {
-            console.log('Puzzle evaluated');
+            console.log('Puzzle submitted');
             console.log(request);
-            success_alert(request.win, request.elapsed_time);
+            success_alert(true, request.elapsed_time);
         },
     })
     return
@@ -59,11 +58,6 @@ function success_alert(win, time) {
                     'class': 'alert-heading',
                     text: 'Try again'
                 })
-            ).append(
-                $('<p/>', {
-                    'class': 'mb-0',
-                    text: 'Time taken: ' + time
-                })
             )
         );
     }
@@ -76,7 +70,8 @@ function success_alert(win, time) {
 
 // gather puzzle info from DOM
 // returns puzzle as array
-function get_puzzle(size) {
+function get_puzzle() {
+    size = $('#size').attr('value');
     board_len = size * size;
     count = 0;
     puzzle = [];
@@ -127,7 +122,7 @@ function place_puzzle(request) {
                         })
                     )
                 );
-            // else display actual value
+                // else display actual value
             } else {
                 $('#grid').append(
                     $('<td/>').append(
@@ -150,6 +145,7 @@ function place_puzzle(request) {
             }
         }
     }
+    console.log('Puzzle ready!');
 }
 
 // request new puzzle with POST
@@ -180,6 +176,63 @@ function new_puzzle() {
     return
 }
 
+function check_puzzle() {
+    function check_line(line) {
+        sum1 = line.reduce((a, b) => a + b, 0);
+        set = new Set(line)
+        sum2 = [...set].reduce((a, b) => a + b, 0);
+        return (line.length == side && sum1 == sum2)
+    }
+
+    puzzle_complete = get_puzzle();
+    puzzle = [...puzzle_complete]
+    side = puzzle.length;
+    size = $('#size').attr('value');
+
+    for (i in puzzle) {
+        for (j in puzzle[i]) {
+            // checks if number
+            if (isNaN(puzzle[i][j]) && isNaN(parseFloat(puzzle[i][j]))) {
+                return success_alert(false);
+            }
+            // checks for within range
+            if (!(0 < puzzle[i][j] <= side)) {
+                return success_alert(false);
+            }
+        }
+        // check rows are valid
+        if (!check_line(puzzle[i])) {
+            return success_alert(false);
+        }
+    }
+
+    // transpose board
+    puzzle = puzzle[0].map((_, colIndex) => puzzle.map(row => row[colIndex]));
+
+    // check columns are valid
+    for (i in puzzle) {
+        if (!check_line(puzzle[i])) {
+            return success_alert(false);
+        }
+    }
+
+    // TODO: check subgrids
+    /* 
+    squares = []
+    for i in range(0, side, size):
+        for j in range(0, side, size):
+            square = list(itertools.chain(row[j:j+size] for row in board[i:i+size]))
+            squares.append(square)
+    bad_squares = [square for line in square for square in squares if not valid_line(list(line))]
+    if not bad_squares: 
+        return False
+    */
+
+    console.log('Puzzle solved!')
+    submit_puzzle(puzzle_complete);
+
+}
+
 // prepare submit buttons
 $(document).ready(function () {
     $('#config_form').submit(function (event) {
@@ -188,6 +241,6 @@ $(document).ready(function () {
     });
     $('#puzzle_form').submit(function (event) {
         event.preventDefault();
-        submit_puzzle();
+        check_puzzle();
     });
 });
