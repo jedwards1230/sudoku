@@ -19,3 +19,4 @@ python manage.py runserver
 * clearly display sub grids
 * highlight values in same row, column, and sub grid
 * format elapsed time to be readable
+* move solver to js to reduce server requests
